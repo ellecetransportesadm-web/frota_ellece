@@ -159,7 +159,7 @@
       gap: 12px;
     }
 
-    /* Botões Otimizados para Toque */
+    /* Botões Otimizados */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -243,11 +243,6 @@
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px;
     }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
     
     /* Layout de duas colunas */
     .partner-layout {
@@ -319,30 +314,12 @@
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 6px;
+      display: flex;
+      align-items: center;
     }
     .card-desc {
       color: var(--muted-foreground);
       font-size: 13px;
-    }
-    .cta-box {
-      margin-top: 30px;
-      background-color: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      text-align: center;
-      box-shadow: var(--shadow-card);
-    }
-    .cta-box h3 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .cta-box p {
-      color: var(--muted-foreground);
-      max-width: 500px;
-      margin: 0 auto 20px auto;
-      font-size: 14px;
     }
 
     /* Área do Terminal de Execução do Robô */
@@ -368,6 +345,46 @@
       text-align: left;
       max-height: 160px;
       overflow-y: auto;
+    }
+
+    /* --- ESTILOS COMPLEMENTARES DA TABELA DE CONSULTA --- */
+    .table-frete select, .table-frete input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: var(--font-sans);
+      outline: none;
+      background-color: #fff;
+    }
+    .table-frete select:focus, .table-frete input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Listas para Manuais PDF */
+    .pdf-list {
+      list-style: none;
+      text-align: left;
+    }
+    .pdf-item {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      background-color: var(--card);
+    }
+    .pdf-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .pdf-icon {
+      color: var(--primary);
+      flex-shrink: 0;
     }
 
     /* --- RODAPÉ (FOOTER) --- */
@@ -428,7 +445,7 @@
       color: #78716c;
     }
 
-    /* Modal / Pop-up de Login */
+    /* Modal de Login */
     .login-overlay {
       position: fixed;
       inset: 0;
@@ -540,7 +557,6 @@
       font-weight: 600;
     }
     
-    /* Tabelas e Caixas de Conteúdo Interno */
     .content-box {
       background: var(--card);
       border: 1px solid var(--border);
@@ -597,29 +613,6 @@
       cursor: pointer;
     }
     
-    .pdf-list {
-      list-style: none;
-    }
-    .pdf-item {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 12px;
-      background-color: var(--card);
-    }
-    .pdf-info {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-    .pdf-icon {
-      color: var(--primary);
-      flex-shrink: 0;
-    }
-
     @media (max-width: 768px) {
       body { padding-top: 65px; }
       .navbar { height: 65px; }
@@ -629,12 +622,7 @@
       .dash-header { flex-direction: column; align-items: flex-start; gap: 12px; }
       .dash-header button { width: 100%; }
       .partner-layout { grid-template-columns: 1fr; gap: 16px; }
-      .partner-layout .rules-box { order: 1; }
-      .partner-layout .content-box { order: 2; }
-      .pdf-item { align-items: stretch; }
-      .pdf-item a { width: 100%; text-align: center; }
       .footer-bottom { flex-direction: column; text-align: center; gap: 4px; }
-      .flex-wrap .btn { width: 100%; }
     }
   </style>
 </head>
@@ -653,8 +641,6 @@
     </div>
   </nav>
 
-
-  
   <div id="publicPage" class="page-section active">
     <section class="hero-section" aria-label="Caminhoneiros independentes">
       <img src="img/img1.jpg" alt="Motorista parceiro" class="slide-img active">
@@ -697,14 +683,9 @@
         </div>
         <div class="card">
           <div class="icon-container"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
-          <div class="card-title">Parceria Forte</div>
+          <div class="brand-title">Parceria Forte</div>
           <div class="card-desc">Faça parte de uma estrutura integrada com suporte total ao motorista de frota.</div>
         </div>
-      </div>
-      <div class="cta-box">
-        <h3>Pronto para rodar com a gente?</h3>
-        <p>Cadastre seu veículo e sua documentação operacional de forma rápida.</p>
-        <button onclick="navigateTo('subFormParceiro')" class="btn btn-primary">Quero ser parceiro</button>
       </div>
     </section>
   </div>
@@ -712,12 +693,10 @@
   <div id="subFormParceiro" class="page-section internal-panel">
     <div class="container">
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 16px;" onclick="navigateTo('publicPage')">← Voltar</button>
-      
       <div class="partner-layout">
         <div class="content-box">
           <h3>Formulário de Cadastro</h3>
           <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">Preencha os dados abaixo de forma exata para análise cadastral.</p>
-          
           <form onsubmit="salvarNovoParceiro(event)">
             <div class="form-group">
               <label>Nome Completo</label>
@@ -751,30 +730,10 @@
             <button type="submit" class="btn btn-primary" style="width:100%;">Enviar Proposta de Parceria</button>
           </form>
         </div>
-
         <div class="rules-box">
-          <h3>
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            Diretrizes de Carregamento
-          </h3>
-          <p style="font-size:12px; color:var(--muted-foreground); margin-bottom:12px;">É obrigatório cumprir os requisitos abaixo para carregar em nossas bases:</p>
-          
-          <div class="rule-item">
-            <strong>1. Declaração Obrigatória de Acerto de Eixos</strong>
-            Em composições com complemento (Cavalo + Reboque), a quantidade de eixos de cada um deve ser informada separadamente no cadastro para totalização correta na REPOM e pedágios.
-          </div>
-          <div class="rule-item">
-            <strong>2. Vinculação de Placas Compartilhadas</strong>
-            Na emissão dos manifestos e MDF-e, é obrigatório preencher individualmente as placas do Cavalo e do Reboque ativo.
-          </div>
-          <div class="rule-item">
-            <strong>3. Regularidade Documental</strong>
-            Motorista e veículo devem possuir CNH, CRLV atualizado e ANTT ativa. Divergências cadastrais geram recusa automática do faturamento.
-          </div>
-          <div class="rule-item">
-            <strong>4. Gerenciadora de Risco</strong>
-            A liberação do frete depende da aprovação prévia do perfil do motorista na seguradora ativa da operação.
-          </div>
+          <h3>Diretrizes de Carregamento</h3>
+          <div class="rule-item"><strong>1. Acerto de Eixos:</strong> Quantidade informada separadamente para REPOM.</div>
+          <div class="rule-item"><strong>2. MDF-e:</strong> Placas de Cavalo e Reboque individuais.</div>
         </div>
       </div>
     </div>
@@ -790,23 +749,29 @@
         <button class="btn btn-sm btn-danger" onclick="logout()">Sair do Sistema</button>
       </div>
 
-      <div class="grid-3">
+      <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
         <div class="card clickable-card" style="text-align: left; border-left: 4px solid var(--secondary);" onclick="navigateTo('subRotas')">
           <div class="icon-container"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon></svg></div>
           <div class="card-title" style="justify-content: space-between;">Controle de Parceiros (Leads) <span>→</span></div>
-          <div class="card-desc">Visualização de propostas de motoristas recebidas pelo site e sinalização de integração à frota.</div>
+          <div class="card-desc">Propostas de motoristas recebidas pelo site.</div>
         </div>
 
         <div class="card clickable-card" style="text-align: left; border-left: 4px solid #06b6d4;" onclick="navigateTo('subXml')">
           <div class="icon-container"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline></svg></div>
           <div class="card-title" style="justify-content: space-between;">Robô Conversor / Modificador XML <span>→</span></div>
-          <div class="card-desc">Modificação estrutural automatizada de arquivos XML EDI das filiais Ellece Guarulhos e Extrema.</div>
+          <div class="card-desc">Modificação estrutural automatizada de arquivos XML EDI.</div>
+        </div>
+
+        <div class="card clickable-card" style="text-align: left; border-left: 4px solid var(--primary);" onclick="navigateTo('subFrete')">
+          <div class="icon-container"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line></svg></div>
+          <div class="card-title" style="justify-content: space-between;">Calculadora de Frete por Região <span>→</span></div>
+          <div class="card-desc">Painel de consulta e faturamento instantâneo por Região e M³.</div>
         </div>
 
         <div class="card clickable-card" style="text-align: left; border-left: 4px solid var(--success);" onclick="navigateTo('subManuais')">
           <div class="icon-container"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
           <div class="card-title" style="justify-content: space-between;">Manuais e Procedimentos (PDF) <span>→</span></div>
-          <div class="card-desc">Download e visualização do passo a passo operacional para emissão de documentação de transporte.</div>
+          <div class="card-desc">Download e consulta das diretrizes de emissão de faturamento.</div>
         </div>
       </div>
     </div>
@@ -815,25 +780,15 @@
   <div id="subRotas" class="page-section internal-panel">
     <div class="container">
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 20px;" onclick="navigateTo('privateDashboard')">← Voltar ao Menu</button>
-      <div class="content-box" style="border-top:4px solid var(--secondary);">
-        <h3>Base Interna: Propostas de Motoristas Recebidas</h3>
-        <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">Marque a caixa <strong>"Cadastrado na Frota"</strong> assim que o veículo e motorista forem validados.</p>
+      <div class="content-box">
+        <h3>Propostas de Motoristas Recebidas</h3>
         <div class="table-responsive">
           <table>
             <thead>
-              <tr>
-                <th style="width: 80px; text-align: center;">Cadastrado na Frota?</th>
-                <th>Nome do Motorista</th>
-                <th>WhatsApp</th>
-                <th>Placa Informada</th>
-                <th>Tipo Veículo</th>
-                <th>ANTT</th>
-              </tr>
+              <tr><th>Frota?</th><th>Motorista</th><th>WhatsApp</th><th>Placa</th><th>Tipo</th><th>ANTT</th></tr>
             </thead>
             <tbody id="listaLeadsParceiros">
-              <tr id="linhaVaziaAviso">
-                <td colspan="6" style="text-align: center; color: var(--muted-foreground); padding: 20px;">Nenhuma proposta preenchida nesta sessão ainda.</td>
-              </tr>
+              <tr id="linhaVaziaAviso"><td colspan="6" style="text-align: center; padding: 20px;">Nenhum registro.</td></tr>
             </tbody>
           </table>
         </div>
@@ -844,22 +799,117 @@
   <div id="subXml" class="page-section internal-panel">
     <div class="container" style="max-width: 700px;">
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 20px;" onclick="navigateTo('privateDashboard')">← Voltar ao Menu</button>
-      <div class="content-box" style="border-top: 4px solid #06b6d4; color: #333;">
-        <h3 style="color: #004aad;">1️⃣ Escolher Transportador / Filial</h3>
-        <label for="listaTransportadores" style="font-weight: 500; display: block; margin-top: 6px;">Selecione a filial correspondente:</label>
-        <select id="listaTransportadores" class="form-control" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-top:6px; font-size:14px;">
-          <option value="">-- Selecione --</option>
-        </select>
-
-        <h3 style="color: #004aad; margin-top: 24px;">2️⃣ Selecione os Arquivos XML</h3>
-        <input type="file" id="xmlFiles" accept=".xml" multiple class="form-control" style="margin-top: 6px;">
+      <div class="content-box" style="border-top: 4px solid #06b6d4;">
+        <h3>Robô Modificador XML</h3>
+        <select id="listaTransportadores" class="form-control" style="margin-top:12px;"></select>
+        <input type="file" id="xmlFiles" accept=".xml" multiple class="form-control" style="margin-top:12px;">
         <div id="fileList" class="file-list">Nenhum arquivo selecionado</div>
-        
-        <button id="processarBtn" class="btn btn-primary" style="background-color: #004aad; width: 100%; margin-top: 20px; border-radius:10px; padding:12px;">
-          🔄 Modificar e Baixar XMLs
-        </button>
-
+        <button id="processarBtn" class="btn btn-primary" style="background-color: #004aad; width: 100%; margin-top: 20px;">🔄 Modificar XMLs</button>
         <div id="consoleRobotLog" class="robot-log" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="subFrete" class="page-section internal-panel">
+    <div class="container" style="max-width: 950px;">
+      <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 20px;" onclick="navigateTo('privateDashboard')">← Voltar ao Menu</button>
+      
+      <div class="content-box" style="border-top:4px solid var(--primary);">
+        <h3>Painel de Consulta & Faturamento de Frete</h3>
+        <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">
+          Selecione a Região desejada e informe a cubagem em $M^3$. O sistema realizará a busca nas tabelas Bauducco e atualizará o resumo automaticamente.
+        </p>
+        
+        <div class="table-responsive table-frete" style="margin-bottom: 24px; border: 1px solid var(--border); border-radius: 8px;">
+          <table id="tabelaFrete">
+            <thead>
+              <tr>
+                <th style="min-width: 250px;">Selecionar Região</th>
+                <th style="width: 180px;">M³ Carregado (NF)</th>
+                <th style="width: 200px;">Tarifa Cadastrada Base (TON)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <select class="regiao-select" onchange="calcularFluxoFrete()">
+                    <option value="">-- Escolha a Região --</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="number" class="m3-input" value="0.00" step="0.01" min="0" oninput="calcularFluxoFrete()">
+                </td>
+                <td>
+                  <input type="text" id="campoTarifaFracaoBase" class="readonly-input" value="R$ 0,00" readonly style="color: var(--primary); font-weight: 600;">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-bottom: 16px;">Resumo do Cálculo</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+            <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Frete</span>
+            <div id="resumoFrete" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 0,00</div>
+          </div>
+          
+          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+            <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Pedágio</span>
+            <div id="resumoPedagio" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 0,00</div>
+          </div>
+          
+          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+            <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Taxa de Emissão</span>
+            <div id="resumoTaxa" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 28,00</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px dashed var(--border); text-align: right; margin-bottom: 16px;">
+          <span style="font-size: 13px; color: var(--muted-foreground); font-weight: 600;">TOTAL UNIFICADO DO PROCESSO:</span>
+          <span id="resumoTotalGeral" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-left: 8px;">R$ 0,00</span>
+        </div>
+
+        <div id="painelConfigAdmin" style="display: none; background: #fff1f2; padding: 20px; border-radius: 8px; border: 1px solid #fecdd3; margin-top: 24px;">
+          <h4 style="color: #9f1239; font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+            <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+            Ferramentas de Ajuste Tarifário & Gestão (Restrito Admin)
+          </h4>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 6px; border: 1px dashed #fecdd3;">
+              <span style="font-size: 12px; font-weight: 600; color: #9f1239; display: block; margin-bottom: 6px;">1. Ajustar Região Ativa</span>
+              <div style="display: flex; gap: 8px;">
+                <input type="number" id="inputNovoFreteAdmin" step="0.01" placeholder="Novo Frete TON (R$)" style="flex: 1; padding: 8px; border: 1px solid #f43f5e; border-radius: 6px; font-size: 13px; background: #fff;">
+                <button class="btn btn-sm btn-primary" onclick="aplicarAjusteTarifaAdmin()" style="background-color: #e11d48; padding: 0 12px; font-size: 12px;">Alterar</button>
+              </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 6px; border: 1px dashed #fecdd3;">
+              <span style="font-size: 12px; font-weight: 600; color: #9f1239; display: block; margin-bottom: 6px;">2. Reajuste Linear Massivo (% Geral)</span>
+              <div style="display: flex; gap: 8px;">
+                <input type="number" id="inputPorcentagemAdmin" step="0.01" placeholder="Ex: 4.00 para 4%" style="flex: 1; padding: 8px; border: 1px solid #f43f5e; border-radius: 6px; font-size: 13px; background: #fff;">
+                <button class="btn btn-sm btn-secondary" onclick="aplicarReajustePorcentagemMassivo()" style="background-color: #f59e0b; color: #78350f; padding: 0 12px; font-size: 12px;">Reajustar Base</button>
+              </div>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 6px; border: 1px solid #fecdd3; grid-column: span 1;">
+              <span style="font-size: 12px; font-weight: 600; color: #9f1239; display: block; margin-bottom: 6px;">3. Controle de Acesso & Novos Usuários</span>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <input type="text" id="newUsername" placeholder="Nome de usuário/ID" style="padding: 6px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px;">
+                <input type="password" id="newPassword" placeholder="Senha operacional" style="padding: 6px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px;">
+                <div style="display: flex; gap: 6px;">
+                  <select id="newUserRole" style="flex: 1; padding: 6px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px; height: 30px;">
+                    <option value="operador">Operador (Filial)</option>
+                    <option value="admin">Administrador (Total)</option>
+                  </select>
+                  <button class="btn btn-sm btn-primary" onclick="cadastrarNovoUsuarioPorAdmin()" style="background-color: #9f1239; font-size: 11px; padding: 0 12px; height: 30px;">Salvar Conta</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -876,11 +926,11 @@
             <div class="pdf-info">
               <svg class="pdf-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
               <div>
-                <strong>guia_opercional _venda_lotacao_passo_a_passo.pdf</strong>
+                <strong>guia_opercional_venda_lotacao_passo_a_passo.pdf</strong>
                 <p style="font-size:11px; color:var(--muted-foreground)">Tamanho: 1.4 MB | Atualizado em: 2026</p>
               </div>
             </div>
-            <a href="manuais/guia_opercional _venda_lotacao_passo_a_passo.pdf" download class="btn btn-sm btn-outline-dark" style="border-color:var(--success); color:var(--success)">Download PDF</a>
+            <a href="manuais/guia_opercional_venda_lotacao_passo_a_passo.pdf" download class="btn btn-sm btn-outline-dark" style="border-color:var(--success); color:var(--success)">Download PDF</a>
           </li>
 
           <li class="pdf-item">
@@ -898,7 +948,7 @@
     </div>
   </div>
 
-  <footer class="main-footer">
+  <footer id="mainPageFooter" class="main-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
@@ -919,12 +969,12 @@
           </div>
           <div class="contact-item">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-            <span>ellecetransportes_Olaria@bauducco.com.br</span>
+            <span>marcelops@bauducco.com.br</span>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <div>&copy; 2026 Bauducco Transportes. Todos os direitos reservados.</div>
+        <div>&copy; 2026 Bauducco Transportes.</div>
         <div>Guarulhos - SP</div>
       </div>
     </div>
@@ -933,28 +983,187 @@
   <div id="loginModal" class="login-overlay" onclick="closeModalOutside(event)">
     <div class="login-card">
       <button class="close-login" onclick="toggleLoginModal(false)">✕</button>
-      <div class="login-header">
-        <h3>Portal Operacional</h3>
-        <p>Insira suas credenciais cadastradas.</p>
-      </div>
       <form onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label for="username">Usuário / ID</label>
-          <input type="text" id="username" class="form-control" placeholder="usuario.logistica" required>
+        <div class="form-group"><label>Usuário</label><input type="text" id="username" class="form-control" placeholder="marcelops" required></div>
+        <div class="form-group"><label>Senha</label><input type="password" id="password" class="form-control" placeholder="••••••••" required></div>
+        <div id="loginError" class="error-msg">Incorreto.</div>
+        <div style="margin-top: 8px;">
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
         </div>
-        <div class="form-group">
-          <label for="password">Senha</label>
-          <input type="password" id="password" class="form-control" placeholder="••••••••" required>
-        </div>
-        <div id="loginError" class="error-msg">Usuário ou senha incorretos.</div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Entrar no Sistema</button>
       </form>
     </div>
   </div>
 
   <script>
     // ========================================================================
-    // LOGICA DO ROBÔ DE IMPORTAÇÃO E MODIFICAÇÃO DE XML EDI
+    // BASE DE DADOS OFICIAL EXTRAÍDA DA SUA IMAGEM
+    // ========================================================================
+    const tabelaPrecoRegioes = {
+      "110 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "120 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "130 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "140 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "210 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "220 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "230 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "240 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "310 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "320 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
+      "330 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
+      "410 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "420 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "430 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "510 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
+      "610 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "620 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "630 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "640 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "710 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "810 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
+      "820 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
+      "830 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
+      "910 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "920 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "930 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
+      "1110 SECA":  { freteTon: 383.57, pedagio: 2.42 },
+      "1111 SECA":  { freteTon: 415.27, pedagio: 2.42 },
+      "1112 SECA":  { freteTon: 383.57, pedagio: 2.42 },
+      "1120 SECA":  { freteTon: 468.11, pedagio: 2.42 },
+      "1210 SECA":  { freteTon: 468.11, pedagio: 2.42 },
+      "1211 SECA":  { freteTon: 468.11, pedagio: 2.42 },
+      "1310 SECA":  { freteTon: 462.82, pedagio: 2.42 },
+      "1311 SECA":  { freteTon: 462.82, pedagio: 2.42 },
+      "1312 SECA":  { freteTon: 462.82, pedagio: 2.42 },
+      "1313 SECA":  { freteTon: 462.82, pedagio: 2.42 },
+      "1314 SECA":  { freteTon: 462.82, pedagio: 2.42 },
+      "1315 SECA":  { freteTon: 520.94, pedagio: 2.42 },
+      "1316 SECA":  { freteTon: 484.62, pedagio: 2.42 },
+      "1320 SECA":  { freteTon: 525.98, pedagio: 2.42 },
+      "1321 SECA":  { freteTon: 563.21, pedagio: 2.42 },
+      "1510 SECA":  { freteTon: 0.00,   pedagio: 2.42 },
+      "1511 SECA":  { freteTon: 714.28, pedagio: 2.42 },
+      "1810 SECA":  { freteTon: 0.00,   pedagio: 2.42 },
+      "1900 SECA":  { freteTon: 0.00,   pedagio: 2.42 },
+      "1910 SECA":  { freteTon: 714.28, pedagio: 2.42 },
+      "1921 SECA":  { freteTon: 415.27, pedagio: 2.42 },
+      "1411 SECA":  { freteTon: 0.00,   pedagio: 2.42 },
+      "1410 SECA":  { freteTon: 714.28, pedagio: 2.42 }
+    };
+
+    const TAXA_EMISSAO_FIXA = 28.00;
+    let usuarioNivelLogado = "operador";
+
+    function popularCamposSelecaoRegiao(selectElement) {
+      selectElement.innerHTML = '<option value="">-- Escolha a Região --</option>';
+      for (let regiao in tabelaPrecoRegioes) {
+        let opt = document.createElement('option');
+        opt.value = regiao;
+        opt.textContent = regiao;
+        selectElement.appendChild(opt);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.regiao-select').forEach(popularCamposSelecaoRegiao);
+    });
+
+    // ========================================================================
+    // LOGICA DO CÁLCULO LOGÍSTICO AJUSTADA PARA REFLETIR VALOR BRUTO
+    // ========================================================================
+    function calcularFluxoFrete() {
+      const regiaoSelecionada = document.querySelector('.regiao-select').value;
+      const m3Carregado = parseFloat(document.querySelector('.m3-input').value) || 0;
+
+      const campoTarifaBase = document.getElementById('campoTarifaFracaoBase');
+      const cardFrete = document.getElementById('resumoFrete');
+      const cardPedagio = document.getElementById('resumoPedagio');
+      const cardTaxa = document.getElementById('resumoTaxa');
+      const cardTotal = document.getElementById('resumoTotalGeral');
+
+      if (!regiaoSelecionada) {
+        campoTarifaBase.value = "R$ 0,00";
+        cardFrete.innerText = "R$ 0,00";
+        cardPedagio.innerText = "R$ 0,00";
+        cardTaxa.innerText = TAXA_EMISSAO_FIXA.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        cardTotal.innerText = "R$ 0,00";
+        return;
+      }
+
+      const dadosRegiao = tabelaPrecoRegioes[regiaoSelecionada];
+      campoTarifaBase.value = dadosRegiao.freteTon.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+      if (m3Carregado <= 0) {
+        cardFrete.innerText = "R$ 0,00";
+        cardPedagio.innerText = "R$ 0,00";
+        cardTotal.innerText = "R$ 0,00";
+        return;
+      }
+
+      const valorFreteCalculado = (dadosRegiao.freteTon * 3 / 10) * m3Carregado;
+      
+      let produtoM3 = m3Carregado * 300;
+      let FatorArredondado = Math.ceil(produtoM3 / 100);
+      const valorPedagioCalculado = dadosRegiao.pedagio * FatorArredondado;
+      
+      const totalGeralFinal = valorFreteCalculado + valorPedagioCalculado + TAXA_EMISSAO_FIXA;
+
+      cardFrete.innerText = valorFreteCalculado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      cardPedagio.innerText = valorPedagioCalculado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      cardTaxa.innerText = TAXA_EMISSAO_FIXA.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      cardTotal.innerText = totalGeralFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function aplicarAjusteTarifaAdmin() {
+      const regiaoSelecionada = document.querySelector('.regiao-select').value;
+      const novoValorFreteTon = parseFloat(document.getElementById('inputNovoFreteAdmin').value);
+
+      if (!regiaoSelecionada) { alert("Selecione uma região."); return; }
+      if (isNaN(novoValorFreteTon) || novoValorFreteTon < 0) { alert("Valor inválido."); return; }
+
+      tabelaPrecoRegioes[regiaoSelecionada].freteTon = novoValorFreteTon;
+      calcularFluxoFrete();
+      alert(`Tarifa da região ${regiaoSelecionada} atualizada!`);
+      document.getElementById('inputNovoFreteAdmin').value = '';
+    }
+
+    function aplicarReajustePorcentagemMassivo() {
+      const porcentagem = parseFloat(document.getElementById('inputPorcentagemAdmin').value);
+      if (isNaN(porcentagem)) { alert("Informe uma porcentagem."); return; }
+
+      const fatorMultiplicador = 1 + (porcentagem / 100);
+      for (let regiao in tabelaPrecoRegioes) {
+        tabelaPrecoRegioes[regiao].freteTon = tabelaPrecoRegioes[regiao].freteTon * fatorMultiplicador;
+      }
+
+      calcularFluxoFrete();
+      alert(`Base unificada reajustada em ${porcentagem}%!`);
+      document.getElementById('inputPorcentagemAdmin').value = '';
+    }
+
+    function cadastrarNovoUsuarioPorAdmin() {
+      const userIn = document.getElementById('newUsername').value.trim().toLowerCase();
+      const passIn = document.getElementById('newPassword').value;
+      const roleIn = document.getElementById('newUserRole').value;
+
+      if (!userIn || !passIn) { alert("Preencha o login e a senha."); return; }
+
+      const jaExiste = usuariosCadastrados.some(u => u.usuario === userIn);
+      if (jaExiste) { alert("Este ID de usuário já existe."); return; }
+
+      usuariosCadastrados.push({
+        usuario: userIn,
+        senha: passIn,
+        nomeExibicao: roleIn === 'admin' ? `Admin ${userIn}` : `Operador ${userIn.toUpperCase()}`,
+        nivel: roleIn
+      });
+
+      alert(`Conta criada com sucesso! O usuário "${userIn}" já pode logar.`);
+      document.getElementById('newUsername').value = '';
+      document.getElementById('newPassword').value = '';
+    }
+
+    // ========================================================================
+    // ROBÔ XML EDI
     // ========================================================================
     const xmlInput = document.getElementById('xmlFiles');
     const fileList = document.getElementById('fileList');
@@ -980,208 +1189,107 @@
 
     xmlInput.addEventListener('change', () => {
       const files = Array.from(xmlInput.files);
-      fileList.innerHTML = files.length === 0
-        ? "Nenhum arquivo selecionado"
-        : files.map(f => `<div>📄 ${f.name}</div>`).join('');
+      fileList.innerHTML = files.length === 0 ? "Nenhum arquivo" : files.map(f => `<div>📄 ${f.name}</div>`).join('');
     });
 
     processButton.addEventListener('click', async () => {
       const selected = selectTransportador.value;
-      if (!selected) {
-        alert("Por favor, selecione um transportador.");
-        return;
-      }
-
+      if (!selected) { alert("Selecione um transportador."); return; }
       const [cnpj, inscricao] = selected.split("|");
       const files = Array.from(xmlInput.files);
-
-      if (files.length === 0) {
-        alert("Selecione ao menos um arquivo XML.");
-        return;
-      }
+      if (files.length === 0) { alert("Selecione os XMLs."); return; }
 
       terminalLog.style.display = "block";
-      terminalLog.innerHTML = `🏁 [ROBÔ]: Iniciando processamento de ${files.length} arquivo(s)...<br>`;
+      terminalLog.innerHTML = `🏁 [ROBÔ]: Iniciando...<br>`;
 
       for (const file of files) {
         try {
           const text = await file.text();
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(text, "text/xml");
-
           const transportaNode = xmlDoc.getElementsByTagName("transporta")[0];
           if (transportaNode) {
-            const cnpjNode = transportaNode.getElementsByTagName("CNPJ")[0];
-            const ieNode = transportaNode.getElementsByTagName("IE")[0];
-
-            if (cnpjNode) cnpjNode.textContent = cnpj;
-            if (ieNode) ieNode.textContent = inscricao;
-            
-            terminalLog.innerHTML += `✔️ [SUCESSO]: Tags modificadas no arquivo: ${file.name}<br>`;
-          } else {
-            terminalLog.innerHTML += `⚠️ [AVISO]: Tag &lt;transporta&gt; não encontrada em: ${file.name}<br>`;
+            if (transportaNode.getElementsByTagName("CNPJ")[0]) transportaNode.getElementsByTagName("CNPJ")[0].textContent = cnpj;
+            if (transportaNode.getElementsByTagName("IE")[0]) transportaNode.getElementsByTagName("IE")[0].textContent = inscricao;
+            terminalLog.innerHTML += `✔️ Modificado: ${file.name}<br>`;
           }
-
           const serializer = new XMLSerializer();
           const modifiedXML = serializer.serializeToString(xmlDoc);
-
           const blob = new Blob([modifiedXML], { type: "application/xml" });
           const link = document.createElement("a");
           link.href = URL.createObjectURL(blob);
           link.download = file.name.replace(".xml", "_modificado.xml");
           link.click();
         } catch (err) {
-          terminalLog.innerHTML += `<span style="color:red;">❌ [ERRO]: Falha ao processar ${file.name}: ${err.message}</span><br>`;
+          terminalLog.innerHTML += `❌ Erro em ${file.name}<br>`;
         }
       }
-
-      terminalLog.innerHTML += `🏁 [FIM]: Processamento concluído em lote!`;
-      alert("✅ Todos os XMLs foram modificados e baixados!");
+      alert("✅ Concluído!");
     });
 
     // ========================================================================
-    // SISTEMA SPA E LOGIN DA PLATAFORMA
+    // SISTEMA DE ROTAS SPA E LOGIN
     // ========================================================================
     const usuariosCadastrados = [
-      { usuario: "marcelops", senha: "Bauducco1412@", nomeExibicao: "Administrador Geral" },
-      { usuario: "renatog", senha: "Bauducco2026", nomeExibicao: "Coordenação" },
-      { usuario: "danielrp", senha: "Bauducco2026", nomeExibicao: "Gerência"}
+      { usuario: "marcelops", senha: "Bauducco1412@", nomeExibicao: "Marcelo (Admin Master)", nivel: "admin" },
+      { usuario: "filial.guarulhos", senha: "456", nomeExibicao: "Filial GRU", nivel: "operador" }
     ];
 
-    const baseInternaLeads = [];
-
     function navigateTo(pageId) {
-      const sections = document.querySelectorAll('.page-section');
-      sections.forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+      if (document.getElementById(pageId)) document.getElementById(pageId).classList.add('active');
       
-      const targetSection = document.getElementById(pageId);
-      if (targetSection) {
-        targetSection.classList.add('active');
+      // AJUSTE: O rodapé só aparece se a página ativa for a home pública ou a tela de virar parceiro
+      const footer = document.getElementById('mainPageFooter');
+      if (pageId === 'publicPage' || pageId === 'subFormParceiro') {
+        footer.style.display = 'block';
+      } else {
+        footer.style.display = 'none';
       }
+      
+      const painelAdmin = document.getElementById('painelConfigAdmin');
+      if (pageId === 'subFrete' && usuarioNivelLogado === 'admin') {
+        painelAdmin.style.display = 'block';
+      } else {
+        painelAdmin.style.display = 'none';
+      }
+
       window.scrollTo(0, 0);
     }
 
-    function salvarNovoParceiro(event) {
-      event.preventDefault();
-      
-      const novoLead = {
-        id: Date.now(),
-        nome: document.getElementById('fNome').value,
-        fone: document.getElementById('fFone').value,
-        placa: document.getElementById('fPlaca').value,
-        tipo: document.getElementById('fTipo').value,
-        antt: document.getElementById('fAntt').value,
-        cadastrado: false
-      };
-
-      baseInternaLeads.push(novoLead);
-      atualizarTabelaLeads();
-
-      alert('Proposta enviada com sucesso! Suas informações foram salvas em nossa base interna da operação.');
-      
-      event.target.reset();
-      navigateTo('publicPage');
-    }
-
-    function alternarStatusFrota(idDoLead, checkboxEl) {
-      const lead = baseInternaLeads.find(l => l.id === idDoLead);
-      if(lead) {
-        lead.cadastrado = checkboxEl.checked;
-        const linhaTr = document.getElementById(`lead-tr-${idDoLead}`);
-        if(checkboxEl.checked) {
-          linhaTr.classList.add('cadastrado-na-frota');
-        } else {
-          linhaTr.classList.remove('cadastrado-na-frota');
-        }
-      }
-    }
-
-    function atualizarTabelaLeads() {
-      const tbody = document.getElementById('listaLeadsParceiros');
-      if (baseInternaLeads.length === 0) return;
-
-      tbody.innerHTML = '';
-      
-      baseInternaLeads.forEach(lead => {
-        const isChecked = lead.cadastrado ? 'checked' : '';
-        const classeTr = lead.cadastrado ? 'class="cadastrado-na-frota"' : '';
-        
-        const row = `<tr id="lead-tr-${lead.id}" ${classeTr}>
-          <td class="checkbox-container">
-            <input type="checkbox" ${isChecked} onchange="alternarStatusFrota(${lead.id}, this)">
-          </td>
-          <td><strong>${lead.nome.toUpperCase()}</strong></td>
-          <td>${lead.fone}</td>
-          <td><span class="user-badge">${lead.placa.toUpperCase()}</span></td>
-          <td>${lead.tipo}</td>
-          <td>${lead.antt}</td>
-        </tr>`;
-        tbody.innerHTML += row;
-      });
-    }
-
-    /* Slider Script */
-    let currentIdx = 0;
-    const slides = document.querySelectorAll('.slide-img');
-    const dots = document.querySelectorAll('.dot');
-    const totalSlides = slides.length;
-    let intervalId;
-
-    function showSlide(index) {
-      if(!slides.length) return;
-      slides.forEach(slide => slide.classList.remove('active'));
-      if(dots.length) dots.forEach(dot => dot.classList.remove('active'));
-      slides[index].classList.add('active');
-      if(dots.length) dots[index].classList.add('active');
-      currentIdx = index;
-    }
-    function nextSlide() { let next = (currentIdx + 1) % totalSlides; showSlide(next); }
-    function setSlide(index) { showSlide(index); clearInterval(intervalId); intervalId = setInterval(nextSlide, 4500); }
-    intervalId = setInterval(nextSlide, 4500);
-
-    /* Modal Control */
     function toggleLoginModal(open) {
       const modal = document.getElementById('loginModal');
-      document.getElementById('loginError').style.display = 'none';
       if (open) { modal.classList.add('open'); } else { modal.classList.remove('open'); }
     }
-    function closeModalOutside(event) { if(event.target.id === 'loginModal') { toggleLoginModal(false); } }
+    function closeModalOutside(event) { if(event.target.id === 'loginModal') toggleLoginModal(false); }
 
-    /* Auth System */
     function handleLogin(event) {
       event.preventDefault();
       const userIn = document.getElementById('username').value.trim().toLowerCase();
       const passIn = document.getElementById('password').value;
-      const errorDiv = document.getElementById('loginError');
-
-      const usuarioValido = usuariosCadastrados.find(u => u.usuario.toLowerCase() === userIn && u.senha === passIn);
-
-      if (usuarioValido) {
-        toggleLoginModal(false);
-        navigateTo('privateDashboard');
-        document.getElementById('lblUserLogado').innerText = usuarioValido.nomeExibicao;
-
-        document.getElementById('navActionArea').innerHTML = `
-          <span style="font-size:13px; color:var(--success); font-weight:600; display:flex; align-items:center; gap:6px; cursor:pointer;" onclick="navigateTo('privateDashboard')">
-            <span style="height:8px; width:8px; background-color:var(--success); border-radius:50%; display:inline-block;"></span>
-            Painel Conectado
-          </span>
-        `;
-      } else {
-        errorDiv.style.display = 'block';
-      }
+      const uValido = usuariosCadastrados.find(u => u.usuario === userIn && u.senha === passIn);
+      if (uValido) {
+        usuarioNivelLogado = uValido.nivel;
+        toggleLoginModal(false); navigateTo('privateDashboard');
+        document.getElementById('lblUserLogado').innerText = uValido.nomeExibicao;
+        document.getElementById('navActionArea').innerHTML = `<span style="font-size:13px; color:var(--success); font-weight:600;" onclick="navigateTo('privateDashboard')">● Painel Conectado</span>`;
+      } else { document.getElementById('loginError').style.display = 'block'; }
     }
 
     function logout() {
+      usuarioNivelLogado = "operador";
       navigateTo('publicPage');
-      document.getElementById('navActionArea').innerHTML = `
-        <button class="btn btn-sm btn-outline-dark" onclick="toggleLoginModal(true)">
-          <svg style="margin-right:6px; width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-          Área do Funcionário
-        </button>
-      `;
-      document.getElementById('username').value = '';
-      document.getElementById('password').value = '';
+      document.getElementById('navActionArea').innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="toggleLoginModal(true)">Área do Funcionário</button>`;
+    }
+
+    let currentIdx = 0;
+    const slides = document.querySelectorAll('.slide-img');
+    if(slides.length) {
+      setInterval(() => {
+        slides[currentIdx].classList.remove('active');
+        currentIdx = (currentIdx + 1) % slides.length;
+        slides[currentIdx].classList.add('active');
+      }, 4500);
     }
   </script>
 </body>
