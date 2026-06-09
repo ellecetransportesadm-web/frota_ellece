@@ -892,21 +892,6 @@
                 <button class="btn btn-sm btn-secondary" onclick="aplicarReajustePorcentagemMassivo()" style="background-color: #f59e0b; color: #78350f; padding: 0 12px; font-size: 12px;">Reajustar Base</button>
               </div>
             </div>
-
-            <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 6px; border: 1px solid #fecdd3; grid-column: span 1;">
-              <span style="font-size: 12px; font-weight: 600; color: #9f1239; display: block; margin-bottom: 6px;">3. Controle de Acesso & Novos Usuários</span>
-              <div style="display: flex; flex-direction: column; gap: 6px;">
-                <input type="text" id="newUsername" placeholder="Nome de usuário/ID" style="padding: 6px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px;">
-                <input type="password" id="newPassword" placeholder="Senha operacional" style="padding: 6px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px;">
-                <div style="display: flex; gap: 6px;">
-                  <select id="newUserRole" style="flex: 1; padding: 6px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px; height: 30px;">
-                    <option value="operador">Operador (Filial)</option>
-                    <option value="admin">Administrador (Total)</option>
-                  </select>
-                  <button class="btn btn-sm btn-primary" onclick="cadastrarNovoUsuarioPorAdmin()" style="background-color: #9f1239; font-size: 11px; padding: 0 12px; height: 30px;">Salvar Conta</button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -1096,7 +1081,7 @@
 
       tabelaPrecoRegioes[regiaoSelecionada].freteTon = novoValorFreteTon;
       calcularFluxoFrete();
-      alert(`Tarifa temporária da região ${regiaoSelecionada} atualizada em tela!`);
+      alert(`Tarifa temporária da região ${regiaoSelecionada} updated em tela!`);
       document.getElementById('inputNovoFreteAdmin').value = '';
     }
 
@@ -1115,7 +1100,7 @@
     }
 
     function cadastrarNovoUsuarioPorAdmin() {
-      alert("Para gerenciar usuários de forma profissional, inclua a nova linha diretamente na aba 'Usuarios' da sua Planilha do Google.");
+      alert("Gerenciamento integrado: inclua ou remova linhas diretamente na aba 'Usuarios' da sua Planilha do Google.");
     }
 
     // ========================================================================
