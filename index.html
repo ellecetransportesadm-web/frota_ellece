@@ -364,7 +364,7 @@
 
     /* Listas para Manuais PDF */
     .pdf-list {
-      style-type: none;
+      list-style-type: none;
       text-align: left;
     }
     .pdf-item {
@@ -785,10 +785,10 @@
         <div class="table-responsive">
           <table>
             <thead>
-              <tr><th>Frota?</th><th>Motorista</th><th>WhatsApp</th><th>Placa</th><th>Tipo</th><th>ANTT</th></tr>
+              <tr><th>Concluído?</th><th>Data Cadastro</th><th>Motorista</th><th>WhatsApp</th><th>Placa</th><th>Tipo</th><th>ANTT</th></tr>
             </thead>
             <tbody id="listaLeadsParceiros">
-              <tr id="linhaVaziaAviso"><td colspan="6" style="text-align: center; padding: 20px;">Nenhum registro.</td></tr>
+              <tr id="linhaVaziaAviso"><td colspan="7" style="text-align: center; padding: 20px;">Nenhum registro localizado no sistema.</td></tr>
             </tbody>
           </table>
         </div>
@@ -980,14 +980,12 @@
   </div>
 
   <script>
-    // ========================================================================
-    // CONFIGURAÇÕES DE INTEGRAÇÃO INTEGRADA (BACK-END PLANILHA)
-    // ========================================================================
+    // URL ÚNICA DO SEU BACK-END GOOGLE APPS SCRIPT
     const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycbzVeyBro8gSo2Oky-wp6EOzz63SSLXN5XS03y4WExjihgFxsmaxJfe5auiNIiI1iYbB/exec"; 
 
     const TAXA_EMISSAO_FIXA = 28.00;
     let usuarioNivelLogado = "operador";
-    let tabelaPrecoRegioes = {}; // Carregada via API dinamicamente após login seguro
+    let tabelaPrecoRegioes = {}; 
 
     function popularCamposSelecaoRegiao(selectElement) {
       selectElement.innerHTML = '<option value="">-- Escolha a Região --</option>';
@@ -999,9 +997,6 @@
       }
     }
 
-    // ========================================================================
-    // LOGICA DO CÁLCULO LOGÍSTICO
-    // ========================================================================
     function calcularFluxoFrete() {
       const regiaoSelecionada = document.querySelector('.regiao-select').value;
       const m3Carregado = parseFloat(document.querySelector('.m3-input').value) || 0;
@@ -1032,11 +1027,9 @@
       }
 
       const valorFreteCalculado = (dadosRegiao.freteTon * 3 / 10) * m3Carregado;
-      
       let produtoM3 = m3Carregado * 300;
       let FatorArredondado = Math.ceil(produtoM3 / 100);
       const valorPedagioCalculado = dadosRegiao.pedagio * FatorArredondado;
-      
       const totalGeralFinal = valorFreteCalculado + valorPedagioCalculado + TAXA_EMISSAO_FIXA;
 
       cardFrete.innerText = valorFreteCalculado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -1045,15 +1038,16 @@
       cardTotal.innerText = totalGeralFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
+    // ENVIA O CADASTRO DO MOTORISTA DIRETO PRO CLOUD GOOGLE SHEETS
     async function salvarNovoParceiro(event) {
       event.preventDefault();
       const dados = {
         acao: "salvarLead",
-        nome: document.getElementById('fNome').value,
-        telefone: document.getElementById('fFone').value,
-        placa: document.getElementById('fPlaca').value,
+        nome: document.getElementById('fNome').value.trim(),
+        telefone: document.getElementById('fFone').value.trim(),
+        placa: document.getElementById('fPlaca').value.trim().toUpperCase(),
         tipo: document.getElementById('fTipo').value,
-        antt: document.getElementById('fAntt').value
+        antt: document.getElementById('fAntt').value.trim()
       };
 
       try {
@@ -1063,12 +1057,73 @@
         });
         const res = await response.json();
         if(res.success) {
-          alert("Proposta de parceria enviada com sucesso!");
+          alert("Cadastro efetuado com sucesso! Aguarde a análise da equipe de faturamento.");
           event.target.reset();
           navigateTo('publicPage');
         }
       } catch (error) {
-        alert("Erro na comunicação com a base de dados.");
+        alert("Erro ao sincronizar dados. Tente novamente.");
+      }
+    }
+
+    // BUSCA OS LEADS DA PLANILHA EM TEMPO REAL PARA A SUA EQUIPE VER
+    async function carregarLeadsSincronizados() {
+      const tbody = document.getElementById('listaLeadsParceiros');
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">Buscando motoristas cadastrados na nuvem...</td></tr>`;
+      
+      try {
+        const response = await fetch(API_URL_PLANILHA, {
+          method: "POST",
+          body: JSON.stringify({ acao: "buscarLeads" })
+        });
+        const res = await response.json();
+        
+        if (res.success && res.leads && res.leads.length > 0) {
+          tbody.innerHTML = "";
+          res.leads.forEach((lead) => {
+            let tr = document.createElement('tr');
+            
+            // Verifica se a planilha retornou verdadeiro/TRUE para concluído
+            let isChecked = (lead.concluido === true || lead.concluido === "true" || lead.concluido === "TRUE") ? "checked" : "";
+            if (isChecked) tr.classList.add('cadastrado-na-frota');
+
+            let dataFormatada = lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : '---';
+
+            tr.innerHTML = `
+              <td class="checkbox-container">
+                <input type="checkbox" ${isChecked} onchange="alternarStatusNuvem('${lead.placa}', this)">
+              </td>
+              <td>${dataFormatada}</td>
+              <td style="font-weight:600;">${lead.nome}</td>
+              <td><a href="https://wa.me/55${lead.telefone.replace(/\D/g,'')}" target="_blank" style="color:#16a34a; text-decoration:underline;">${lead.telefone}</a></td>
+              <td><span style="background:#e7e5e4; padding:2px 6px; border-radius:4px; font-family:monospace;">${lead.placa}</span></td>
+              <td>${lead.tipo}</td>
+              <td>${lead.antt}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } else {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum motorista pendente encontrado.</td></tr>`;
+        }
+      } catch (error) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color:#dc2626;">Erro na conexão em nuvem.</td></tr>`;
+      }
+    }
+
+    // GRAVA O FLEGA SEGURO DIRETO NA PLANILHA GOOGLE
+    async function alternarStatusNuvem(placa, checkbox) {
+      let tr = checkbox.closest('tr');
+      let status = checkbox.checked;
+
+      if (status) { tr.classList.add('cadastrado-na-frota'); } else { tr.classList.remove('cadastrado-na-frota'); }
+
+      try {
+        await fetch(API_URL_PLANILHA, {
+          method: "POST",
+          body: JSON.stringify({ acao: "atualizarStatusLead", placa: placa, concluido: status })
+        });
+      } catch (error) {
+        alert("Erro ao gravar alteração na planilha.");
       }
     }
 
@@ -1100,7 +1155,7 @@
     }
 
     // ========================================================================
-    // ROBÔ XML EDI (Estrutura de arquivos locais — Mantida Segura e Intacta)
+    // ROBÔ XML EDI (Arquivos locais)
     // ========================================================================
     const xmlInput = document.getElementById('xmlFiles');
     const fileList = document.getElementById('fileList');
@@ -1165,7 +1220,7 @@
     });
 
     // ========================================================================
-    // SISTEMA DE ROTAS SPA E LOGIN COMPATÍVEL COM BACK-END VIA FETCH
+    // SPA E VALIDAÇÃO DE LOGIN HTTPS VIA API
     // ========================================================================
     async function handleLogin(event) {
       event.preventDefault();
@@ -1220,6 +1275,10 @@
         painelAdmin.style.display = 'block';
       } else {
         painelAdmin.style.display = 'none';
+      }
+
+      if (pageId === 'subRotas') {
+        carregarLeadsSincronizados();
       }
 
       window.scrollTo(0, 0);
