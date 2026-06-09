@@ -998,8 +998,7 @@
     // ========================================================================
     // CONFIGURAÇÕES DE INTEGRAÇÃO INTEGRADA (BACK-END PLANILHA)
     // ========================================================================
-    // INSIRA ABAIXO A URL DA SUA IMPLANTAÇÃO GERADA NO GOOGLE APPS SCRIPT:
-    const API_URL_PLANILHA = "SUA_URL_DO_APPS_SCRIPT_AQUI"; 
+    const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycbzVeyBro8gSo2Oky-wp6EOzz63SSLXN5XS03y4WExjihgFxsmaxJfe5auiNIiI1iYbB/exec"; 
 
     const TAXA_EMISSAO_FIXA = 28.00;
     let usuarioNivelLogado = "operador";
@@ -1088,7 +1087,6 @@
       }
     }
 
-    // Mantido localmente para os ajustes estéticos das ferramentas Admin
     function aplicarAjusteTarifaAdmin() {
       const regiaoSelecionada = document.querySelector('.regiao-select').value;
       const novoValorFreteTon = parseFloat(document.getElementById('inputNovoFreteAdmin').value);
