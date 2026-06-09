@@ -401,7 +401,7 @@
       gap: 24px;
       margin-bottom: 24px;
     }
-    .footer-col h4 {
+    .footer-grid .footer-col h4 {
       font-size: 15px;
       font-weight: 700;
       margin-bottom: 12px;
@@ -983,7 +983,7 @@
   </div>
 
   <script>
-    // URL SINCRONIZADA E CONFIGURADA
+    // URL DO SEU BACK-END GOOGLE APPS SCRIPT
     const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxrAlsdifCG2WBL6aVKDr24dDHRIxfJC3J6SLcP4zD6S_4T8-vJzRTlfI3w7KERO5FHpw/exec"; 
 
     const TAXA_EMISSAO_FIXA = 28.00;
@@ -1041,6 +1041,7 @@
       cardTotal.innerText = totalGeralFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
+    // ALINHADO: Captura exatamente o valor de 'fNome' para salvar na planilha
     async function salvarNovoParceiro(event) {
       event.preventDefault();
       const dados = {
@@ -1068,7 +1069,7 @@
       }
     }
 
-    // ALINHADO: Consome exatamente as chaves em português que o seu Google Script gera
+    // ALINHADO: Mapeado com as chaves em português idênticas às que o seu script envia (nome, telefone, concluido, etc)
     async function carregarLeadsSincronizados() {
       const tbody = document.getElementById('listaLeadsParceiros');
       tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">Buscando motoristas cadastrados na nuvem...</td></tr>`;
@@ -1085,13 +1086,12 @@
           res.leads.forEach((lead) => {
             let tr = document.createElement('tr');
             
-            // Validação rigorosa baseada na chave em português retornada pelo seu script do Google
+            // Tratamento rigoroso do flegue lido do Google Sheets
             let isChecked = (lead.concluido === true || lead.concluido === "true" || lead.concluido === "TRUE") ? "checked" : "";
             if (isChecked) tr.classList.add('cadastrado-na-frota');
 
             let dataFormatada = lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : '---';
 
-            // Monta as 7 colunas perfeitamente casadas com o cabeçalho e com a planilha
             tr.innerHTML = `
               <td class="checkbox-container">
                 <input type="checkbox" ${isChecked} onchange="alternarStatusNuvem('${lead.placa}', this)">
@@ -1102,7 +1102,7 @@
               <td><span style="background:#e7e5e4; padding:2px 6px; border-radius:4px; font-family:monospace;">${lead.placa}</span></td>
               <td>${lead.tipo}</td>
               <td>${lead.antt}</td>
-            `;
+                `;
             tbody.appendChild(tr);
           });
         } else {
@@ -1113,6 +1113,7 @@
       }
     }
 
+    // ALINHADO: Sincroniza a ação com 'atualizarStatusLead' idêntico ao código do Google
     async function alternarStatusNuvem(placa, checkbox) {
       let tr = checkbox.closest('tr');
       let status = checkbox.checked;
@@ -1122,7 +1123,7 @@
       try {
         await fetch(API_URL_PLANILHA, {
           method: "POST",
-          body: JSON.stringify({ acao: "updatedStatusLead", placa: placa, concluido: status })
+          body: JSON.stringify({ acao: "atualizarStatusLead", placa: placa, concluido: status })
         });
       } catch (error) {
         alert("Erro ao gravar alteração na planilha.");
