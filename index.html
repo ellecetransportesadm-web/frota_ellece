@@ -683,7 +683,7 @@
         </div>
         <div class="card">
           <div class="icon-container"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
-          <div class="brand-title">Parceria Forte</div>
+          <div class="card-title">Parceria Forte</div>
           <div class="card-desc">Faça parte de uma estrutura integrada com suporte total ao motorista de frota.</div>
         </div>
       </div>
@@ -817,7 +817,7 @@
       <div class="content-box" style="border-top:4px solid var(--primary);">
         <h3>Painel de Consulta & Faturamento de Frete</h3>
         <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">
-          Selecione a Região desejada e informe a cubagem em $M^3$. O sistema realizará a busca nas tabelas Bauducco e atualizará o resumo automaticamente.
+          Selecione a Região desejada e informe a cubagem em M³. O sistema realizará a busca nas tabelas Bauducco e atualizará o resumo automaticamente.
         </p>
         
         <div class="table-responsive table-frete" style="margin-bottom: 24px; border: 1px solid var(--border); border-radius: 8px;">
@@ -996,62 +996,14 @@
 
   <script>
     // ========================================================================
-    // BASE DE DADOS OFICIAL EXTRAÍDA DA SUA IMAGEM
+    // CONFIGURAÇÕES DE INTEGRAÇÃO INTEGRADA (BACK-END PLANILHA)
     // ========================================================================
-    const tabelaPrecoRegioes = {
-      "110 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "120 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "130 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "140 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "210 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "220 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "230 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "240 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "310 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "320 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
-      "330 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
-      "410 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "420 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "430 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "510 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
-      "610 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "620 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "630 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "640 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "710 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "810 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
-      "820 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
-      "830 SECA":   { freteTon: 346.58926, pedagio: 2.42 },
-      "910 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "920 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "930 SECA":   { freteTon: 346.58926, pedagio: 0.00 },
-      "1110 SECA":  { freteTon: 383.57, pedagio: 2.42 },
-      "1111 SECA":  { freteTon: 415.27, pedagio: 2.42 },
-      "1112 SECA":  { freteTon: 383.57, pedagio: 2.42 },
-      "1120 SECA":  { freteTon: 468.11, pedagio: 2.42 },
-      "1210 SECA":  { freteTon: 468.11, pedagio: 2.42 },
-      "1211 SECA":  { freteTon: 468.11, pedagio: 2.42 },
-      "1310 SECA":  { freteTon: 462.82, pedagio: 2.42 },
-      "1311 SECA":  { freteTon: 462.82, pedagio: 2.42 },
-      "1312 SECA":  { freteTon: 462.82, pedagio: 2.42 },
-      "1313 SECA":  { freteTon: 462.82, pedagio: 2.42 },
-      "1314 SECA":  { freteTon: 462.82, pedagio: 2.42 },
-      "1315 SECA":  { freteTon: 520.94, pedagio: 2.42 },
-      "1316 SECA":  { freteTon: 484.62, pedagio: 2.42 },
-      "1320 SECA":  { freteTon: 525.98, pedagio: 2.42 },
-      "1321 SECA":  { freteTon: 563.21, pedagio: 2.42 },
-      "1510 SECA":  { freteTon: 0.00,   pedagio: 2.42 },
-      "1511 SECA":  { freteTon: 714.28, pedagio: 2.42 },
-      "1810 SECA":  { freteTon: 0.00,   pedagio: 2.42 },
-      "1900 SECA":  { freteTon: 0.00,   pedagio: 2.42 },
-      "1910 SECA":  { freteTon: 714.28, pedagio: 2.42 },
-      "1921 SECA":  { freteTon: 415.27, pedagio: 2.42 },
-      "1411 SECA":  { freteTon: 0.00,   pedagio: 2.42 },
-      "1410 SECA":  { freteTon: 714.28, pedagio: 2.42 }
-    };
+    // INSIRA ABAIXO A URL DA SUA IMPLANTAÇÃO GERADA NO GOOGLE APPS SCRIPT:
+    const API_URL_PLANILHA = "SUA_URL_DO_APPS_SCRIPT_AQUI"; 
 
     const TAXA_EMISSAO_FIXA = 28.00;
     let usuarioNivelLogado = "operador";
+    let tabelaPrecoRegioes = {}; // Carregada via API dinamicamente após login seguro
 
     function popularCamposSelecaoRegiao(selectElement) {
       selectElement.innerHTML = '<option value="">-- Escolha a Região --</option>';
@@ -1063,12 +1015,8 @@
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.regiao-select').forEach(popularCamposSelecaoRegiao);
-    });
-
     // ========================================================================
-    // LOGICA DO CÁLCULO LOGÍSTICO AJUSTADA PARA REFLETIR VALOR BRUTO
+    // LOGICA DO CÁLCULO LOGÍSTICO
     // ========================================================================
     function calcularFluxoFrete() {
       const regiaoSelecionada = document.querySelector('.regiao-select').value;
@@ -1080,7 +1028,7 @@
       const cardTaxa = document.getElementById('resumoTaxa');
       const cardTotal = document.getElementById('resumoTotalGeral');
 
-      if (!regiaoSelecionada) {
+      if (!regiaoSelecionada || !tabelaPrecoRegioes[regiaoSelecionada]) {
         campoTarifaBase.value = "R$ 0,00";
         cardFrete.innerText = "R$ 0,00";
         cardPedagio.innerText = "R$ 0,00";
@@ -1113,6 +1061,34 @@
       cardTotal.innerText = totalGeralFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
+    async function salvarNovoParceiro(event) {
+      event.preventDefault();
+      const dados = {
+        acao: "salvarLead",
+        nome: document.getElementById('fNome').value,
+        telefone: document.getElementById('fFone').value,
+        placa: document.getElementById('fPlaca').value,
+        tipo: document.getElementById('fTipo').value,
+        antt: document.getElementById('fAntt').value
+      };
+
+      try {
+        const response = await fetch(API_URL_PLANILHA, {
+          method: "POST",
+          body: JSON.stringify(dados)
+        });
+        const res = await response.json();
+        if(res.success) {
+          alert("Proposta de parceria enviada com sucesso!");
+          event.target.reset();
+          navigateTo('publicPage');
+        }
+      } catch (error) {
+        alert("Erro na comunicação com a base de dados.");
+      }
+    }
+
+    // Mantido localmente para os ajustes estéticos das ferramentas Admin
     function aplicarAjusteTarifaAdmin() {
       const regiaoSelecionada = document.querySelector('.regiao-select').value;
       const novoValorFreteTon = parseFloat(document.getElementById('inputNovoFreteAdmin').value);
@@ -1122,7 +1098,7 @@
 
       tabelaPrecoRegioes[regiaoSelecionada].freteTon = novoValorFreteTon;
       calcularFluxoFrete();
-      alert(`Tarifa da região ${regiaoSelecionada} atualizada!`);
+      alert(`Tarifa temporária da região ${regiaoSelecionada} atualizada em tela!`);
       document.getElementById('inputNovoFreteAdmin').value = '';
     }
 
@@ -1136,34 +1112,16 @@
       }
 
       calcularFluxoFrete();
-      alert(`Base unificada reajustada em ${porcentagem}%!`);
+      alert(`Base temporária em tela reajustada em ${porcentagem}%!`);
       document.getElementById('inputPorcentagemAdmin').value = '';
     }
 
     function cadastrarNovoUsuarioPorAdmin() {
-      const userIn = document.getElementById('newUsername').value.trim().toLowerCase();
-      const passIn = document.getElementById('newPassword').value;
-      const roleIn = document.getElementById('newUserRole').value;
-
-      if (!userIn || !passIn) { alert("Preencha o login e a senha."); return; }
-
-      const jaExiste = usuariosCadastrados.some(u => u.usuario === userIn);
-      if (jaExiste) { alert("Este ID de usuário já existe."); return; }
-
-      usuariosCadastrados.push({
-        usuario: userIn,
-        senha: passIn,
-        nomeExibicao: roleIn === 'admin' ? `Admin ${userIn}` : `Operador ${userIn.toUpperCase()}`,
-        nivel: roleIn
-      });
-
-      alert(`Conta criada com sucesso! O usuário "${userIn}" já pode logar.`);
-      document.getElementById('newUsername').value = '';
-      document.getElementById('newPassword').value = '';
+      alert("Para gerenciar usuários de forma profissional, inclua a nova linha diretamente na aba 'Usuarios' da sua Planilha do Google.");
     }
 
     // ========================================================================
-    // ROBÔ XML EDI
+    // ROBÔ XML EDI (Estrutura de arquivos locais — Mantida Segura e Intacta)
     // ========================================================================
     const xmlInput = document.getElementById('xmlFiles');
     const fileList = document.getElementById('fileList');
@@ -1228,18 +1186,49 @@
     });
 
     // ========================================================================
-    // SISTEMA DE ROTAS SPA E LOGIN
+    // SISTEMA DE ROTAS SPA E LOGIN COMPATÍVEL COM BACK-END VIA FETCH
     // ========================================================================
-    const usuariosCadastrados = [
-      { usuario: "marcelops", senha: "Bauducco1412@", nomeExibicao: "Marcelo (Admin Master)", nivel: "admin" },
-      { usuario: "filial.guarulhos", senha: "456", nomeExibicao: "Filial GRU", nivel: "operador" }
-    ];
+    async function handleLogin(event) {
+      event.preventDefault();
+      const userIn = document.getElementById('username').value.trim().toLowerCase();
+      const passIn = document.getElementById('password').value;
+      const errorMsg = document.getElementById('loginError');
+
+      errorMsg.style.display = 'none';
+
+      try {
+        const response = await fetch(API_URL_PLANILHA, {
+          method: "POST",
+          body: JSON.stringify({ acao: "login", usuario: userIn, senha: passIn })
+        });
+        
+        const resultado = await response.json();
+
+        if (resultado.autenticado) {
+          usuarioNivelLogado = resultado.nivel;
+          tabelaPrecoRegioes = resultado.tabelas; 
+          
+          document.querySelectorAll('.regiao-select').forEach(popularCamposSelecaoRegiao);
+
+          toggleLoginModal(false); 
+          navigateTo('privateDashboard');
+          
+          document.getElementById('lblUserLogado').innerText = resultado.nomeExibicao;
+          document.getElementById('navActionArea').innerHTML = `<span style="font-size:13px; color:var(--success); font-weight:600; cursor:pointer;" onclick="navigateTo('privateDashboard')">● Painel Conectado</span>`;
+        } else {
+          errorMsg.innerText = "Usuário ou senha incorretos.";
+          errorMsg.style.display = 'block';
+        }
+      } catch (error) {
+        errorMsg.innerText = "Erro na conexão com o servidor de autenticação.";
+        errorMsg.style.display = 'block';
+      }
+    }
 
     function navigateTo(pageId) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
       if (document.getElementById(pageId)) document.getElementById(pageId).classList.add('active');
       
-      // AJUSTE: O rodapé só aparece se a página ativa for a home pública ou a tela de virar parceiro
       const footer = document.getElementById('mainPageFooter');
       if (pageId === 'publicPage' || pageId === 'subFormParceiro') {
         footer.style.display = 'block';
@@ -1263,23 +1252,11 @@
     }
     function closeModalOutside(event) { if(event.target.id === 'loginModal') toggleLoginModal(false); }
 
-    function handleLogin(event) {
-      event.preventDefault();
-      const userIn = document.getElementById('username').value.trim().toLowerCase();
-      const passIn = document.getElementById('password').value;
-      const uValido = usuariosCadastrados.find(u => u.usuario === userIn && u.senha === passIn);
-      if (uValido) {
-        usuarioNivelLogado = uValido.nivel;
-        toggleLoginModal(false); navigateTo('privateDashboard');
-        document.getElementById('lblUserLogado').innerText = uValido.nomeExibicao;
-        document.getElementById('navActionArea').innerHTML = `<span style="font-size:13px; color:var(--success); font-weight:600;" onclick="navigateTo('privateDashboard')">● Painel Conectado</span>`;
-      } else { document.getElementById('loginError').style.display = 'block'; }
-    }
-
     function logout() {
       usuarioNivelLogado = "operador";
+      tabelaPrecoRegioes = {};
       navigateTo('publicPage');
-      document.getElementById('navActionArea').innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="toggleLoginModal(true)">Área do Funcionário</button>`;
+      document.getElementById('navActionArea').innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="toggleLoginModal(true)"><svg style="margin-right:6px; width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Área do Funcionário</button>`;
     }
 
     let currentIdx = 0;
