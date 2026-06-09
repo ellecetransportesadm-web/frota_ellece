@@ -785,7 +785,15 @@
         <div class="table-responsive">
           <table>
             <thead>
-              <tr><th>Concluído?</th><th>Data Cadastro</th><th>Motorista</th><th>WhatsApp</th><th>Placa</th><th>Tipo</th><th>ANTT</th></tr>
+              <tr>
+                <th>Concluído?</th>
+                <th>Data Cadastro</th>
+                <th>Motorista</th>
+                <th>WhatsApp</th>
+                <th>Placa</th>
+                <th>Tipo</th>
+                <th>ANTT</th>
+              </tr>
             </thead>
             <tbody id="listaLeadsParceiros">
               <tr id="linhaVaziaAviso"><td colspan="7" style="text-align: center; padding: 20px;">Nenhum registro localizado no sistema.</td></tr>
@@ -980,8 +988,8 @@
   </div>
 
   <script>
-    // URL ÚNICA DO SEU BACK-END GOOGLE APPS SCRIPT
-    const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycbw4zDrGkng7hKv3AdPQcSRkNKfugxyxcSK64RjTUc_n9Yg_jN4QhdDes3J1sIOTym1p/exec; 
+    // URL DO GOOGLE APPS SCRIPT
+    const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxrAlsdifCG2WBL6aVKDr24dDHRIxfJC3J6SLcP4zD6S_4T8-vJzRTlfI3w7KERO5FHpw/exec"; 
 
     const TAXA_EMISSAO_FIXA = 28.00;
     let usuarioNivelLogado = "operador";
@@ -1038,12 +1046,11 @@
       cardTotal.innerText = totalGeralFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    // ENVIA O CADASTRO DO MOTORISTA DIRETO PRO CLOUD GOOGLE SHEETS
     async function salvarNovoParceiro(event) {
       event.preventDefault();
       const dados = {
         acao: "salvarLead",
-        nome: document.getElementById('fNome').value.trim(),
+        name: document.getElementById('fNome').value.trim(),
         telefone: document.getElementById('fFone').value.trim(),
         placa: document.getElementById('fPlaca').value.trim().toUpperCase(),
         tipo: document.getElementById('fTipo').value,
@@ -1066,7 +1073,6 @@
       }
     }
 
-    // BUSCA OS LEADS DA PLANILHA EM TEMPO REAL PARA A SUA EQUIPE VER
     async function carregarLeadsSincronizados() {
       const tbody = document.getElementById('listaLeadsParceiros');
       tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">Buscando motoristas cadastrados na nuvem...</td></tr>`;
@@ -1083,7 +1089,6 @@
           res.leads.forEach((lead) => {
             let tr = document.createElement('tr');
             
-            // Verifica se a planilha retornou verdadeiro/TRUE para concluído
             let isChecked = (lead.concluido === true || lead.concluido === "true" || lead.concluido === "TRUE") ? "checked" : "";
             if (isChecked) tr.classList.add('cadastrado-na-frota');
 
@@ -1110,7 +1115,6 @@
       }
     }
 
-    // GRAVA O FLEGA SEGURO DIRETO NA PLANILHA GOOGLE
     async function alternarStatusNuvem(placa, checkbox) {
       let tr = checkbox.closest('tr');
       let status = checkbox.checked;
@@ -1220,7 +1224,7 @@
     });
 
     // ========================================================================
-    // SPA E VALIDAÇÃO DE LOGIN HTTPS VIA API
+    // SPA E AUTENTICAÇÃO INTEGRADA
     // ========================================================================
     async function handleLogin(event) {
       event.preventDefault();
