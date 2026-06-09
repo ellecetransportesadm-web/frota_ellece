@@ -57,7 +57,7 @@
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      z-index: 100;
+ z-index: 100;
       box-shadow: 0 1px 3px rgb(0 0 0 / 0.05);
     }
     .nav-container {
@@ -983,8 +983,8 @@
   </div>
 
   <script>
-    // URL DO SEU BACK-END GOOGLE APPS SCRIPT
-    const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycbyuTnF6M8KSgOO-oEdQXk91DPArMafXn1VtJKgi_QTA2zgVKoTgZSqqmOKSpweyVcZj-g/exec"; 
+    // URL SINCRONIZADA E CONFIGURADA
+    const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycby_lEa5DFiOUL65BVGbHlR85XDNR3pvCFECqaMkXBTPm1ykT_ahOVhLz_aWR4XK45QsWA/exec"; 
 
     const TAXA_EMISSAO_FIXA = 28.00;
     let usuarioNivelLogado = "operador";
@@ -1041,7 +1041,6 @@
       cardTotal.innerText = totalGeralFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    // ALINHADO: Captura exatamente o valor de 'fNome' para salvar na planilha
     async function salvarNovoParceiro(event) {
       event.preventDefault();
       const dados = {
@@ -1069,7 +1068,7 @@
       }
     }
 
-    // ALINHADO: Mapeado com as chaves em português idênticas às que o seu script envia (nome, telefone, concluido, etc)
+    // ALINHADO: Lendo estritamente em português (nome, telefone, placa, concluido) enviado do script cloud
     async function carregarLeadsSincronizados() {
       const tbody = document.getElementById('listaLeadsParceiros');
       tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">Buscando motoristas cadastrados na nuvem...</td></tr>`;
@@ -1086,7 +1085,6 @@
           res.leads.forEach((lead) => {
             let tr = document.createElement('tr');
             
-            // Tratamento rigoroso do flegue lido do Google Sheets
             let isChecked = (lead.concluido === true || lead.concluido === "true" || lead.concluido === "TRUE") ? "checked" : "";
             if (isChecked) tr.classList.add('cadastrado-na-frota');
 
@@ -1102,7 +1100,7 @@
               <td><span style="background:#e7e5e4; padding:2px 6px; border-radius:4px; font-family:monospace;">${lead.placa}</span></td>
               <td>${lead.tipo}</td>
               <td>${lead.antt}</td>
-                `;
+            `;
             tbody.appendChild(tr);
           });
         } else {
@@ -1113,7 +1111,6 @@
       }
     }
 
-    // ALINHADO: Sincroniza a ação com 'atualizarStatusLead' idêntico ao código do Google
     async function alternarStatusNuvem(placa, checkbox) {
       let tr = checkbox.closest('tr');
       let status = checkbox.checked;
