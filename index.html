@@ -452,17 +452,13 @@
       background-color: rgba(28, 25, 23, 0.6);
       backdrop-filter: blur(4px);
       z-index: 200;
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
       padding: 16px;
     }
     .login-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
+      display: flex;
     }
     .login-card {
       background-color: var(--card);
@@ -473,11 +469,6 @@
       padding: 24px;
       box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
       position: relative;
-      transform: scale(0.95);
-      transition: transform 0.3s ease;
-    }
-    .login-overlay.open .login-card {
-      transform: scale(1);
     }
     .close-login {
       position: absolute;
@@ -719,7 +710,7 @@
                   <option value="Carreta">Carreta</option>
                   <option value="Bitrem">Bitrem</option>
                   <option value="Toco">Toco</option>
-                  <option value="VLC">VUC</option>
+                  <option value="VUC">VUC</option>
                 </select>
               </div>
               <div class="form-group">
@@ -786,13 +777,13 @@
           <table>
             <thead>
               <tr>
-                <th>Data</th>
-                <th>Nome</th>
-                <th>Telefone</th>
+                <th>Concluído?</th>
+                <th>Data Cadastro</th>
+                <th>Motorista</th>
+                <th>WhatsApp</th>
                 <th>Placa</th>
                 <th>Tipo</th>
                 <th>ANTT</th>
-                <th>Concluído?</th>
               </tr>
             </thead>
             <tbody id="listaLeadsParceiros">
@@ -976,6 +967,10 @@
   <div id="loginModal" class="login-overlay" onclick="closeModalOutside(event)">
     <div class="login-card">
       <button class="close-login" onclick="toggleLoginModal(false)">✕</button>
+      <div class="login-header">
+        <h3>Acesso Restrito</h3>
+        <p>Informe suas credenciais operacionais</p>
+      </div>
       <form onsubmit="handleLogin(event)">
         <div class="form-group"><label>Usuário</label><input type="text" id="username" class="form-control" placeholder="marcelops" required></div>
         <div class="form-group"><label>Senha</label><input type="password" id="password" class="form-control" placeholder="••••••••" required></div>
@@ -988,7 +983,7 @@
   </div>
 
   <script>
-    // URL DO GOOGLE APPS SCRIPT
+    // URL SINCRONIZADA E CONFIGURADA
     const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycbxrAlsdifCG2WBL6aVKDr24dDHRIxfJC3J6SLcP4zD6S_4T8-vJzRTlfI3w7KERO5FHpw/exec"; 
 
     const TAXA_EMISSAO_FIXA = 28.00;
@@ -1050,7 +1045,7 @@
       event.preventDefault();
       const dados = {
         acao: "salvarLead",
-        name: document.getElementById('fNome').value.trim(),
+        nome: document.getElementById('fNome').value.trim(),
         telefone: document.getElementById('fFone').value.trim(),
         placa: document.getElementById('fPlaca').value.trim().toUpperCase(),
         tipo: document.getElementById('fTipo').value,
@@ -1073,6 +1068,7 @@
       }
     }
 
+    // ALINHADO: Consome exatamente as chaves em português que o seu Google Script gera
     async function carregarLeadsSincronizados() {
       const tbody = document.getElementById('listaLeadsParceiros');
       tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">Buscando motoristas cadastrados na nuvem...</td></tr>`;
@@ -1089,11 +1085,13 @@
           res.leads.forEach((lead) => {
             let tr = document.createElement('tr');
             
+            // Validação rigorosa baseada na chave em português retornada pelo seu script do Google
             let isChecked = (lead.concluido === true || lead.concluido === "true" || lead.concluido === "TRUE") ? "checked" : "";
             if (isChecked) tr.classList.add('cadastrado-na-frota');
 
             let dataFormatada = lead.data ? new Date(lead.data).toLocaleDateString('pt-BR') : '---';
 
+            // Monta as 7 colunas perfeitamente casadas com o cabeçalho e com a planilha
             tr.innerHTML = `
               <td class="checkbox-container">
                 <input type="checkbox" ${isChecked} onchange="alternarStatusNuvem('${lead.placa}', this)">
@@ -1108,7 +1106,7 @@
             tbody.appendChild(tr);
           });
         } else {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum motorista pendente encontrado.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px;">Nenhum motorista pendente encontrado na aba Leads.</td></tr>`;
         }
       } catch (error) {
         tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color:#dc2626;">Erro na conexão em nuvem.</td></tr>`;
@@ -1124,7 +1122,7 @@
       try {
         await fetch(API_URL_PLANILHA, {
           method: "POST",
-          body: JSON.stringify({ acao: "atualizarStatusLead", placa: placa, concluido: status })
+          body: JSON.stringify({ acao: "updatedStatusLead", placa: placa, concluido: status })
         });
       } catch (error) {
         alert("Erro ao gravar alteração na planilha.");
@@ -1290,9 +1288,16 @@
 
     function toggleLoginModal(open) {
       const modal = document.getElementById('loginModal');
-      if (open) { modal.classList.add('open'); } else { modal.classList.remove('open'); }
+      if (open) { 
+        modal.classList.add('open'); 
+      } else { 
+        modal.classList.remove('open'); 
+      }
     }
-    function closeModalOutside(event) { if(event.target.id === 'loginModal') toggleLoginModal(false); }
+    
+    function closeModalOutside(event) { 
+      if(event.target.id === 'loginModal') toggleLoginModal(false); 
+    }
 
     function logout() {
       usuarioNivelLogado = "operador";
