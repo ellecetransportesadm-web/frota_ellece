@@ -860,12 +860,28 @@
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 20px;" onclick="navigateTo('privateDashboard')">← Voltar ao Menu</button>
       <div class="content-box" style="border-top: 4px solid var(--success);">
         <h3>Manuais e Processos de Emissão</h3>
-        <p style="font-size:14px; color:var(--foreground); margin-top: 10px; margin-bottom: 6px; font-weight: 500;">
-          Nenhum documento operacional está ativo no servidor no momento.
+        <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">
+          Clique no botão para abrir ou realizar o download das diretrizes operacionais configuradas.
         </p>
-        <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:12px;">
-          Para disponibilizar novos guias em PDF para os motoristas e colaboradores, realize o upload dos arquivos diretamente na pasta mapeada do repositório ou vincule a planilha correspondente.
-        </p>
+
+        <ul class="pdf-list">
+          <li class="pdf-item">
+            <div class="pdf-info">
+              <div class="pdf-icon">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+              </div>
+              <div>
+                <strong style="display:block; font-size:14px; color:var(--foreground); text-align: left;">Guia Operacional - Venda Lotação Passo a Passo</strong>
+                <span style="font-size:12px; color:var(--muted-foreground); display: block; text-align: left;">Instruções detalhadas para o processo de faturamento e emissão de lotação.</span>
+              </div>
+            </div>
+            <a href="manuais/guia_operacional_venda_lotacao_passo_a_passo.pdf" target="_blank" class="btn btn-sm btn-outline-dark" style="align-self: flex-start; padding: 6px 12px; font-size: 12px; margin-top: 4px;">Visualizar PDF</a>
+          </li>
+        </ul>
+
       </div>
     </div>
   </div>
