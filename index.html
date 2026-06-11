@@ -829,36 +829,10 @@
         </div>
 
         <div id="painelConfigAdmin" style="display: none; background: #fff1f2; padding: 20px; border-radius: 8px; border: 1px solid #fecdd3; margin-top: 24px;">
-          <h4 style="color: #9f1239; font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+          <h4 style="color: #9f1239; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
             <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-            Ferramentas de Ajuste Tarifário & Gestão (Restrito Admin)
+            Modo Administrador Ativo — Gerenciamento e Reajustes Diretamente no Google Sheets
           </h4>
-          
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-            <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 6px; border: 1px dashed #fecdd3;">
-              <span style="font-size: 12px; font-weight: 600; color: #9f1239; display: block; margin-bottom: 6px;">1. Ajustar Tabela Lotação / Região Ativa</span>
-              <div style="display: flex; gap: 8px;">
-                <input type="number" id="inputNovoFreteAdmin" step="0.01" placeholder="Novo Frete TON (R$)" style="flex: 1; padding: 8px; border: 1px solid #f43f5e; border-radius: 6px; font-size: 13px; background: #fff;">
-                <button class="btn btn-sm btn-primary" onclick="aplicarAjusteTarifaAdmin()" style="background-color: #e11d48; padding: 0 12px; font-size: 12px;">Alterar</button>
-              </div>
-            </div>
-
-            <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 6px; border: 1px dashed #fecdd3;">
-              <span style="font-size: 12px; font-weight: 600; color: #9f1239; display: block; margin-bottom: 6px;">2. Ajustar Tabela Fracionada (Região Ativa)</span>
-              <div style="display: flex; gap: 8px;">
-                <input type="number" id="inputNovoFracionadoAdmin" step="0.01" placeholder="Novo Valor Fracionado (R$)" style="flex: 1; padding: 8px; border: 1px solid #f43f5e; border-radius: 6px; font-size: 13px; background: #fff;">
-                <button class="btn btn-sm btn-primary" onclick="aplicarAjusteFracionadoAdmin()" style="background-color: #e11d48; padding: 0 12px; font-size: 12px;">Alterar</button>
-              </div>
-            </div>
-
-            <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 6px; border: 1px dashed #fecdd3; grid-column: span 1;">
-              <span style="font-size: 12px; font-weight: 600; color: #9f1239; display: block; margin-bottom: 6px;">3. Reajuste Linear Massivo (% Geral)</span>
-              <div style="display: flex; gap: 8px;">
-                <input type="number" id="inputPorcentagemAdmin" step="0.01" placeholder="Ex: 4.00 para 4%" style="flex: 1; padding: 8px; border: 1px solid #f43f5e; border-radius: 6px; font-size: 13px; background: #fff;">
-                <button class="btn btn-sm btn-secondary" onclick="aplicarReajustePorcentagemMassivo()" style="background-color: #f59e0b; color: #78350f; padding: 0 12px; font-size: 12px;">Reajustar Base</button>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -1024,53 +998,6 @@
       }
     }
 
-    function aplicarAjusteTarifaAdmin() {
-      const regiaoSelecionada = document.querySelector('.regiao-select').value;
-      const novoValorFreteTon = parseFloat(document.getElementById('inputNovoFreteAdmin').value);
-
-      if (!regiaoSelecionada) { alert("Selecione uma região."); return; }
-      if (isNaN(novoValorFreteTon) || novoValorFreteTon < 0) { alert("Valor inválido."); return; }
-
-      tabelaPrecoRegioes[regiaoSelecionada].freteTon = novoValorFreteTon;
-      calcularFluxoFrete();
-      alert(`Tarifa temporária da região ${regiaoSelecionada} atualizada em tela!`);
-      document.getElementById('inputNovoFreteAdmin').value = '';
-    }
-
-    function aplicarAjusteFracionadoAdmin() {
-      const regiaoSelecionada = document.querySelector('.regiao-select').value;
-      const novoValorFracionado = parseFloat(document.getElementById('inputNovoFracionadoAdmin').value);
-
-      if (!regiaoSelecionada) { alert("Selecione uma região para aplicar o ajuste fracionado."); return; }
-      if (isNaN(novoValorFracionado) || novoValorFracionado < 0) { alert("Valor numérico inválido."); return; }
-
-      if (!tabelaPrecoRegioes[regiaoSelecionada].fracionado) {
-        tabelaPrecoRegioes[regiaoSelecionada].fracionado = 0;
-      }
-      
-      tabelaPrecoRegioes[regiaoSelecionada].fracionado = novoValorFracionado;
-      calcularFluxoFrete();
-      alert(`Tabela Fracionada da região ${regiaoSelecionada} modificada com sucesso!`);
-      document.getElementById('inputNovoFracionadoAdmin').value = '';
-    }
-
-    function aplicarReajustePorcentagemMassivo() {
-      const porcentagem = parseFloat(document.getElementById('inputPorcentagemAdmin').value);
-      if (isNaN(porcentagem)) { alert("Informe uma porcentagem."); return; }
-
-      const fatorMultiplicador = 1 + (porcentagem / 100);
-      for (let regiao in tabelaPrecoRegioes) {
-        tabelaPrecoRegioes[regiao].freteTon = tabelaPrecoRegioes[regiao].freteTon * fatorMultiplicador;
-        if(tabelaPrecoRegioes[regiao].fracionado) {
-          tabelaPrecoRegioes[regiao].fracionado = tabelaPrecoRegioes[regiao].fracionado * fatorMultiplicador;
-        }
-      }
-
-      calcularFluxoFrete();
-      alert(`Base temporária em tela (Lotação e Fracionado) reajustada em ${porcentagem}%!`);
-      document.getElementById('inputPorcentagemAdmin').value = '';
-    }
-
     // ========================================================================
     // ROBÔ XML EDI (Arquivos locais)
     // ========================================================================
@@ -1157,7 +1084,6 @@
         const resultado = await response.json();
 
         if (resultado.autenticado) {
-          // CORREÇÃO: Força a gravação do nível sempre em caixa baixa para evitar falhas de validação visual
           usuarioNivelLogado = resultado.nivel ? resultado.nivel.toString().toLowerCase().trim() : "operador";
           tabelaPrecoRegioes = resultado.tabelas; 
           
@@ -1178,7 +1104,6 @@
       }
     }
 
-    // CORREÇÃO TRATATIVA DE APRESENTAÇÃO OPERACIONAL:
     function navigateTo(pageId) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
       if (document.getElementById(pageId)) document.getElementById(pageId).classList.add('active');
@@ -1190,7 +1115,6 @@
         footer.style.display = 'none';
       }
       
-      // AJUSTE ANTI-FALHA DE DIRETRIZ: Valida tanto se o retorno da planilha vier como 'admin' ou 'ADMIN'
       const painelAdmin = document.getElementById('painelConfigAdmin');
       if (pageId === 'subFrete' && (usuarioNivelLogado === 'admin' || usuarioNivelLogado === 'ADMIN')) {
         painelAdmin.style.display = 'block';
