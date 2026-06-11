@@ -199,6 +199,16 @@
     .btn-outline-dark:hover {
       background-color: var(--accent);
     }
+    /* Estilo customizado para o botão de ocorrência no topo do banner escuro */
+    .btn-outline-hero {
+      border-color: rgba(255, 255, 255, 0.4);
+      background-color: transparent;
+      color: var(--primary-foreground);
+    }
+    .btn-outline-hero:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary-foreground);
+    }
     .btn-danger {
       background-color: #dc2626;
       color: white;
@@ -637,7 +647,13 @@
             <h1>Caminhoneiro autônomo? <br><span class="text-secondary">Rode com a Bauducco.</span></h1>
             <p class="hero-p">Cargas constantes o ano todo, pagamento semanal e parceria de longo prazo com uma das marcas mais queridas do Brasil.</p>
             <div class="flex-wrap">
-              <button onclick="navigateTo('subFormParceiro')" class="btn btn-secondary">Quero ser parceiro </button>
+              <button onclick="navigateTo('subFormParceiro')" class="btn btn-secondary">Quero ser parceiro</button>
+              <a href="https://ellecetransportesadm-web.github.io/app_ocorrencias/" target="_blank" class="btn btn-outline-hero">
+                <svg style="margin-right:8px; width:18px; height:18px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                Registrar Ocorrência
+              </a>
             </div>
           </div>
         </div>
