@@ -1,2318 +1,1159 @@
 <!DOCTYPE html>
-
 <html lang="pt-br">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Transportes Bauducco — Central de Operações</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
-
     :root {
-
       --background: #fdfdfd;
-
       --foreground: #1c1917;
-
       --primary: #e11d48;
-
       --primary-foreground: #ffffff;
-
       --secondary: #f59e0b;
-
       --secondary-foreground: #78350f;
-
       --card: #ffffff;
-
       --card-foreground: #1c1917;
-
       --muted-foreground: #78716c;
-
       --accent: #f5f5f4;
-
       --border: #e7e5e4;
-
       --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-
       --font-sans: 'Plus Jakarta Sans', sans-serif;
-
       --success: #16a34a;
-
     }
-
     * {
-
       box-sizing: border-box;
-
       margin: 0;
-
       padding: 0;
-
     }
-
     body {
-
       font-family: var(--font-sans);
-
       background-color: var(--background);
-
       color: var(--foreground);
-
       line-height: 1.5;
-
       padding-top: 70px;
-
       display: flex;
-
       flex-direction: column;
-
       min-height: 100vh;
-
     }
-
     .container {
-
       width: 100%;
-
       max-width: 1200px;
-
       margin: 0 auto;
-
       padding: 0 16px;
-
     }
-
     
-
     /* Navbar / Menu Superior */
-
     .navbar {
-
       position: fixed;
-
       top: 0;
-
       left: 0;
-
       right: 0;
-
       height: 70px;
-
       background-color: var(--card);
-
       border-bottom: 1px solid var(--border);
-
       display: flex;
-
       align-items: center;
-
       z-index: 100;
-
       box-shadow: 0 1px 3px rgb(0 0 0 / 0.05);
-
     }
-
     .nav-container {
-
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       width: 100%;
-
     }
-
     .brand {
-
       font-size: 18px;
-
       font-weight: 700;
-
       color: var(--primary);
-
       text-decoration: none;
-
       display: flex;
-
       align-items: center;
-
       gap: 6px;
-
       cursor: pointer;
-
     }
-
     .brand span {
-
       color: var(--secondary);
-
     }
-
-
 
     /* Classes de controle de exibição de páginas */
-
     .page-section {
-
       display: none;
-
     }
-
     .page-section.active {
-
       display: block;
-
     }
-
-
 
     /* --- TELA PÚBLICA (VISÃO DO MOTORISTA) --- */
-
     .hero-section {
-
       position: relative;
-
       border-bottom: 1px solid var(--border);
-
       overflow: hidden;
-
       height: 60vh;
-
       min-height: 400px;
-
     }
-
     .slide-img {
-
       position: absolute;
-
       inset: 0;
-
       width: 100%;
-
       height: 100%;
-
       object-fit: cover;
-
       object-position: center;
-
       opacity: 0;
-
       transition: opacity 1.5s ease-in-out;
-
     }
-
     .slide-img.active {
-
       opacity: 1;
-
     }
-
     .hero-overlay {
-
       position: absolute;
-
       inset: 0;
-
       background: linear-gradient(180deg, rgba(28,25,23,0.85) 0%, rgba(28,25,23,0.7) 60%, rgba(28,25,23,0.4) 100%);
-
       z-index: 1;
-
     }
-
     .hero-content {
-
       position: relative;
-
       z-index: 2;
-
       height: 100%;
-
       display: flex;
-
       align-items: center;
-
       padding: 20px 0;
-
     }
-
     .max-w-xl {
-
       max-width: 576px;
-
       color: var(--primary-foreground);
-
     }
-
     .badge {
-
       display: inline-block;
-
       border-radius: 9999px;
-
       background-color: var(--secondary);
-
       color: var(--secondary-foreground);
-
       padding: 4px 12px;
-
       font-size: 11px;
-
       font-weight: 700;
-
       text-transform: uppercase;
-
       letter-spacing: 0.05em;
-
       margin-bottom: 12px;
-
     }
-
     h1 {
-
       font-size: 2rem;
-
       font-weight: 700;
-
       margin-bottom: 12px;
-
       line-height: 1.2;
-
     }
-
     h1 span.text-secondary {
-
       color: var(--secondary);
-
     }
-
     .hero-p {
-
       font-size: 1rem;
-
       opacity: 0.95;
-
       margin-bottom: 20px;
-
     }
-
     .flex-wrap {
-
       display: flex;
-
       flex-wrap: wrap;
-
       gap: 12px;
-
     }
-
-
 
     /* Botões Otimizados */
-
     .btn {
-
       display: inline-flex;
-
       align-items: center;
-
       justify-content: center;
-
       border-radius: 8px;
-
       font-weight: 600;
-
       padding: 14px 24px;
-
       font-size: 14px;
-
       cursor: pointer;
-
       text-decoration: none;
-
       transition: all 0.2s;
-
       border: 1px solid transparent;
-
     }
-
     .btn-sm {
-
       padding: 10px 18px;
-
       font-size: 13px;
-
     }
-
     .btn-secondary {
-
       background-color: var(--secondary);
-
       color: var(--secondary-foreground);
-
     }
-
     .btn-secondary:hover {
-
       background-color: #d97706;
-
     }
-
     .btn-primary {
-
       background-color: var(--primary);
-
       color: var(--primary-foreground);
-
     }
-
     .btn-primary:hover {
-
       background-color: #be123c;
-
     }
-
     .btn-outline-dark {
-
       border-color: var(--border);
-
       background-color: transparent;
-
       color: var(--foreground);
-
     }
-
     .btn-outline-dark:hover {
-
       background-color: var(--accent);
-
     }
-
     .btn-danger {
-
       background-color: #dc2626;
-
       color: white;
-
     }
-
-
 
     .slider-dots {
-
       position: absolute;
-
       bottom: 16px;
-
       left: 50%;
-
       transform: translateX(-50%);
-
       z-index: 10;
-
       display: flex;
-
       gap: 8px;
-
     }
-
     .dot {
-
       height: 6px;
-
       border-radius: 9999px;
-
       background-color: rgba(255, 255, 255, 0.5);
-
       border: none;
-
       cursor: pointer;
-
       transition: all 0.3s;
-
       width: 12px;
-
     }
-
     .dot.active {
-
       width: 28px;
-
       background-color: var(--primary-foreground);
-
     }
-
     .section-py {
-
       padding: 40px 0;
-
     }
-
     .text-center {
-
       text-align: center;
-
       margin-bottom: 24px;
-
     }
-
     .text-center h2 {
-
       font-size: 1.75rem;
-
       font-weight: 700;
-
     }
-
     
-
     .grid-3 {
-
       display: grid;
-
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
       gap: 16px;
-
     }
-
     
-
     /* Layout de duas colunas */
-
     .partner-layout {
-
       display: grid;
-
       grid-template-columns: 1fr 1fr;
-
       gap: 24px;
-
       align-items: start;
-
     }
-
     
-
     /* Regras de Carregamento */
-
     .rules-box {
-
       background-color: #fff;
-
       border: 1px solid var(--border);
-
       border-radius: 12px;
-
       padding: 20px;
-
       box-shadow: var(--shadow-card);
-
     }
-
     .rules-box h3 {
-
       font-size: 16px;
-
       font-weight: 700;
-
       margin-bottom: 12px;
-
       color: var(--foreground);
-
       display: flex;
-
       align-items: center;
-
       gap: 8px;
-
     }
-
     .rule-item {
-
       padding: 10px;
-
       border-left: 3px solid var(--secondary);
-
       background-color: rgba(245, 158, 11, 0.03);
-
       border-radius: 0 8px 8px 0;
-
       margin-bottom: 10px;
-
       font-size: 13px;
-
     }
-
     .rule-item strong {
-
       color: var(--secondary-foreground);
-
       display: block;
-
       margin-bottom: 2px;
-
     }
-
-
 
     .card {
-
       background-color: var(--card);
-
       border: 1px solid var(--border);
-
       border-radius: 12px;
-
       padding: 20px;
-
       box-shadow: var(--shadow-card);
-
       text-align: center;
-
     }
-
     .clickable-card {
-
       cursor: pointer;
-
       transition: transform 0.2s, box-shadow 0.2s;
-
     }
-
     .clickable-card:hover {
-
       transform: translateY(-4px);
-
       box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-
     }
-
     .icon-container {
-
       margin: 0 auto 12px auto;
-
       display: inline-flex;
-
       width: 44px;
-
       height: 44px;
-
       align-items: center;
-
       justify-content: center;
-
       border-radius: 8px;
-
       background-color: var(--accent);
-
       color: var(--primary);
-
     }
-
     .card-title {
-
       font-size: 16px;
-
       font-weight: 700;
-
       margin-bottom: 6px;
-
       display: flex;
-
       align-items: center;
-
     }
-
     .card-desc {
-
       color: var(--muted-foreground);
-
       font-size: 13px;
-
     }
-
-
 
     /* Área do Terminal de Execução do Robô */
-
     .file-list {
-
       background: #f9f9f9;
-
       border-radius: 8px;
-
       padding: 10px;
-
       font-size: 0.9rem;
-
       color: #555;
-
       max-height: 120px;
-
       overflow-y: auto;
-
       border: 1px solid #ddd;
-
       margin-top: 8px;
-
     }
-
     .robot-log {
-
       background-color: #1e1e1e;
-
       color: #39ff14;
-
       font-family: 'Courier New', Courier, monospace;
-
       padding: 12px;
-
       border-radius: 8px;
-
       margin-top: 14px;
-
       font-size: 12px;
-
       text-align: left;
-
       max-height: 160px;
-
       overflow-y: auto;
-
     }
-
-
 
     /* --- ESTILOS COMPLEMENTARES DA TABELA DE CONSULTA --- */
-
     .table-frete select, .table-frete input {
-
       width: 100%;
-
       padding: 10px;
-
       border: 1px solid var(--border);
-
       border-radius: 6px;
-
       font-size: 14px;
-
       font-family: var(--font-sans);
-
       outline: none;
-
       background-color: #fff;
-
     }
-
     .table-frete select:focus, .table-frete input:focus {
-
       border-color: var(--primary);
-
     }
-
-
 
     /* Listas para Manuais PDF */
-
     .pdf-list {
-
       list-style-type: none;
-
       text-align: left;
-
     }
-
     .pdf-item {
-
       display: flex;
-
       flex-direction: column;
-
       gap: 12px;
-
       padding: 14px;
-
       border: 1px solid var(--border);
-
       border-radius: 8px;
-
       margin-bottom: 12px;
-
       background-color: var(--card);
-
     }
-
     .pdf-info {
-
       display: flex;
-
       align-items: flex-start;
-
       gap: 10px;
-
     }
-
     .pdf-icon {
-
       color: var(--primary);
-
       flex-shrink: 0;
-
     }
-
-
 
     /* --- RODAPÉ (FOOTER) --- */
-
     .main-footer {
-
       background-color: #1c1917;
-
       color: #f5f5f4;
-
       padding: 32px 0 16px 0;
-
       margin-top: auto;
-
       border-top: 4px solid var(--secondary);
-
     }
-
     .footer-grid {
-
       display: grid;
-
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
       gap: 24px;
-
       margin-bottom: 24px;
-
     }
-
     .footer-grid .footer-col h4 {
-
       font-size: 15px;
-
       font-weight: 700;
-
       margin-bottom: 12px;
-
       color: var(--secondary);
-
     }
-
     .footer-col p, .footer-col span {
-
       font-size: 13px;
-
       color: #a8a29e;
-
       margin-bottom: 6px;
-
     }
-
     .footer-col a {
-
       color: #a8a29e;
-
       text-decoration: none;
-
       font-size: 13px;
-
       display: block;
-
       margin-bottom: 6px;
-
     }
-
     .footer-col a:hover {
-
       color: var(--primary-foreground);
-
     }
-
     .contact-item {
-
       display: flex;
-
       align-items: center;
-
       gap: 8px;
-
       margin-bottom: 10px;
-
       font-size: 13px;
-
       color: #e7e5e4;
-
     }
-
     .contact-item svg {
-
       color: var(--secondary);
-
       flex-shrink: 0;
-
     }
-
     .footer-bottom {
-
       border-top: 1px solid #44403c;
-
       padding-top: 16px;
-
       display: flex;
-
       justify-content: space-between;
-
       flex-wrap: wrap;
-
       gap: 8px;
-
       font-size: 12px;
-
       color: #78716c;
-
     }
-
-
 
     /* Modal de Login */
-
     .login-overlay {
-
       position: fixed;
-
       inset: 0;
-
       background-color: rgba(28, 25, 23, 0.6);
-
       backdrop-filter: blur(4px);
-
       z-index: 200;
-
       display: none;
-
       align-items: center;
-
       justify-content: center;
-
       padding: 16px;
-
     }
-
     .login-overlay.open {
-
       display: flex;
-
     }
-
     .login-card {
-
       background-color: var(--card);
-
       border: 1px solid var(--border);
-
       border-radius: 16px;
-
       width: 100%;
-
       max-width: 400px;
-
       padding: 24px;
-
       box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-
       position: relative;
-
     }
-
     .close-login {
-
       position: absolute;
-
       top: 14px;
-
       right: 14px;
-
       background: transparent;
-
       border: none;
-
       cursor: pointer;
-
       color: var(--muted-foreground);
-
       font-size: 16px;
-
     }
-
     .login-header {
-
       text-align: center;
-
       margin-bottom: 20px;
-
     }
-
     .login-header h3 {
-
       font-size: 20px;
-
       font-weight: 700;
-
     }
-
     .login-header p {
-
       font-size: 13px;
-
       color: var(--muted-foreground);
-
       margin-top: 2px;
-
     }
-
     .form-group {
-
       margin-bottom: 14px;
-
     }
-
     .form-group label {
-
       display: block;
-
       font-size: 12px;
-
       font-weight: 600;
-
       margin-bottom: 4px;
-
     }
-
     .form-control {
-
       width: 100%;
-
       padding: 12px 14px;
-
       border-radius: 8px;
-
       border: 1px solid var(--border);
-
       font-family: var(--font-sans);
-
       font-size: 14px;
-
       outline: none;
-
     }
-
     .form-control:focus {
-
       border-color: var(--primary);
-
     }
-
     .error-msg {
-
       color: #dc2626;
-
       font-size: 12px;
-
       margin-top: 6px;
-
       text-align: center;
-
       display: none;
-
     }
-
-
 
     /* Estrutura das Subpáginas Internas */
-
     .internal-panel {
-
       padding: 24px 0;
-
       background-color: #fafaf9;
-
       min-height: calc(100vh - 70px);
-
     }
-
     .dash-header {
-
       display: flex;
-
       justify-content: space-between;
-
       align-items: center;
-
       border-bottom: 2px solid var(--border);
-
       padding-bottom: 12px;
-
       margin-bottom: 24px;
-
     }
-
     .dash-header h2 {
-
       font-size: 20px;
-
       font-weight: 700;
-
     }
-
     .user-badge {
-
       background-color: rgba(225, 29, 72, 0.1);
-
       color: var(--primary);
-
       padding: 2px 8px;
-
       border-radius: 6px;
-
       font-weight: 600;
-
     }
-
     
-
     .content-box {
-
       background: var(--card);
-
       border: 1px solid var(--border);
-
       border-radius: 12px;
-
       padding: 20px;
-
       box-shadow: var(--shadow-card);
-
       margin-bottom: 20px;
-
     }
-
     .content-box h3 {
-
       margin-bottom: 12px;
-
       font-size: 16px;
-
       border-bottom: 1px solid var(--border);
-
       padding-bottom: 6px;
-
     }
-
     .form-grid {
-
       display: grid;
-
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
       gap: 12px;
-
       margin-bottom: 12px;
-
     }
-
     
-
     .table-responsive {
-
       width: 100%;
-
       overflow-x: auto;
-
       -webkit-overflow-scrolling: touch;
-
       border: 1px solid var(--border);
-
       border-radius: 8px;
-
     }
-
     table {
-
       width: 100%;
-
       border-collapse: collapse;
-
       text-align: left;
-
       font-size: 13px;
-
       white-space: nowrap;
-
     }
-
     th, td {
-
       padding: 10px 12px;
-
     }
-
     th {
-
       background-color: var(--accent);
-
       font-weight: 600;
-
     }
-
     
-
     tr.cadastrado-na-frota {
-
       background-color: rgba(22, 163, 74, 0.05);
-
       color: #15803d;
-
     }
-
     
-
     @media (max-width: 768px) {
-
       body { padding-top: 65px; }
-
       .navbar { height: 65px; }
-
       h1 { font-size: 1.65rem; }
-
       .hero-section { height: auto; min-height: 350px; }
-
       .hero-content { align-items: flex-start; }
-
       .dash-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-
       .dash-header button { width: 100%; }
-
       .partner-layout { grid-template-columns: 1fr; gap: 16px; }
-
       .footer-bottom { flex-direction: column; text-align: center; gap: 4px; }
-
     }
-
   </style>
-
 </head>
-
 <body>
 
-
-
   <nav class="navbar">
-
     <div class="container nav-container">
-
       <div class="brand" onclick="navigateTo('publicPage')">Bauducco <span>Transportes</span></div>
-
       
-
       <div id="navActionArea">
-
         <button class="btn btn-sm btn-outline-dark" onclick="toggleLoginModal(true)">
-
           <svg style="margin-right:6px; width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-
           Área do Funcionário
-
         </button>
-
       </div>
-
     </div>
-
   </nav>
 
-
-
   <div id="publicPage" class="page-section active">
-
     <section class="hero-section" aria-label="Caminhoneiros independentes">
-
       <img src="img/img1.jpg" alt="Motorista parceiro" class="slide-img active">
-
       <img src="img/img2.jpg" alt="Caminhão em rota" class="slide-img">
-
       <img src="img/img3.jpg" alt="Frota Bauducco" class="slide-img">
-
       <div class="hero-overlay"></div>
-
       <div class="hero-content">
-
         <div class="container">
-
           <div class="max-w-xl">
-
             <span class="badge">Oportunidade</span>
-
             <h1>Caminhoneiro autônomo? <br><span class="text-secondary">Rode com a Bauducco.</span></h1>
-
             <p class="hero-p">Cargas constantes o ano todo, pagamento semanal e parceria de longo prazo com uma das marcas mais queridas do Brasil.</p>
-
             <div class="flex-wrap">
-
               <button onclick="navigateTo('subFormParceiro')" class="btn btn-secondary">Quero ser parceiro </button>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
       <div class="slider-dots">
-
         <button class="dot active" onclick="setSlide(0)"></button>
-
         <button class="dot" onclick="setSlide(1)"></button>
-
         <button class="dot" onclick="setSlide(2)"></button>
-
       </div>
-
     </section>
-
-
 
     <section class="container section-py">
-
       <div class="text-center">
-
         <h2>Por que ser parceiro?</h2>
-
       </div>
-
       <div class="grid-3">
-
         <div class="card">
-
           <div class="icon-container"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v2"></path><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"></path><path d="M18 12a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h4v-6H18z"></path></svg></div>
-
           <div class="card-title">Pagamento Semanal</div>
-
           <div class="card-desc">Receba seus fretes com agilidade, direto em conta e garantia de prazo.</div>
-
         </div>
-
         <div class="card">
-
           <div class="icon-container"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
-
           <div class="card-title">Cargas o Ano Todo</div>
-
           <div class="card-desc">Fluxo constante e regular de mercadorias, sem sofrer com a entressafra.</div>
-
         </div>
-
         <div class="card">
-
           <div class="icon-container"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
-
           <div class="card-title">Parceria Forte</div>
-
-          <div class="card-desc">Faça parte de uma estrutura integrada com suporte total ao motorista de frota.</div>
-
+          <div class="card-desc">Faça parte de uma structure integrada com suporte total ao motorista de frota.</div>
         </div>
-
       </div>
-
     </section>
-
   </div>
-
-
 
   <div id="subFormParceiro" class="page-section internal-panel">
-
     <div class="container">
-
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 16px;" onclick="navigateTo('publicPage')">← Voltar</button>
-
       <div class="partner-layout">
-
         <div class="content-box">
-
           <h3>Formulário de Cadastro</h3>
-
           <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">Preencha os dados abaixo de forma exata para análise cadastral.</p>
-
           <form onsubmit="salvarNovoParceiro(event)">
-
             <div class="form-group">
-
               <label>Nome Completo</label>
-
               <input type="text" id="fNome" class="form-control" required>
-
             </div>
-
             <div class="form-grid">
-
               <div class="form-group">
-
                 <label>WhatsApp / Telefone</label>
-
                 <input type="tel" id="fFone" class="form-control" placeholder="(00) 00000-0000" required>
-
               </div>
-
               <div class="form-group">
-
                 <label>Placa do Cavalo (Trator)</label>
-
                 <input type="text" id="fPlaca" class="form-control" placeholder="ABC1D23" required>
-
               </div>
-
             </div>
-
             <div class="form-grid">
-
               <div class="form-group">
-
                 <label>Tipo de Composição</label>
-
                 <select id="fTipo" class="form-control">
-
                   <option value="Carreta">Carreta</option>
-
                   <option value="Bitrem">Bitrem</option>
-
                   <option value="Toco">Toco</option>
-
                   <option value="VUC">VUC</option>
-
                 </select>
-
               </div>
-
               <div class="form-group">
-
                 <label>Registro ANTT</label>
-
                 <input type="text" id="fAntt" class="form-control" required>
-
               </div>
-
             </div>
-
             <button type="submit" class="btn btn-primary" style="width:100%;">Enviar Proposta de Parceria</button>
-
           </form>
-
         </div>
-
         <div class="rules-box">
-
           <h3>Diretrizes de Carregamento</h3>
-
           <div class="rule-item"><strong>1. Acerto de Eixos:</strong> Quantidade informada separadamente para REPOM.</div>
-
           <div class="rule-item"><strong>2. MDF-e:</strong> Placas de Cavalo e Reboque individuais.</div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
-
-
 
   <div id="privateDashboard" class="page-section internal-panel">
-
     <div class="container">
-
       <div class="dash-header">
-
         <div>
-
           <h2>Painel Operacional Logística</h2>
-
           <p class="welcome-txt">Conectado como: <span id="lblUserLogado" class="user-badge">operador</span></p>
-
         </div>
-
         <button class="btn btn-sm btn-danger" onclick="logout()">Sair do Sistema</button>
-
       </div>
-
-
 
       <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
-
         <div class="card clickable-card" style="text-align: left; border-left: 4px solid #06b6d4;" onclick="navigateTo('subXml')">
-
           <div class="icon-container"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline></svg></div>
-
           <div class="card-title" style="justify-content: space-between;">Robô Conversor / Modificador XML <span>→</span></div>
-
           <div class="card-desc">Modificação estrutural automatizada de arquivos XML EDI.</div>
-
         </div>
-
-
 
         <div class="card clickable-card" style="text-align: left; border-left: 4px solid var(--primary);" onclick="navigateTo('subFrete')">
-
           <div class="icon-container"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="12" y1="4" x2="12" y2="20"></line></svg></div>
-
           <div class="card-title" style="justify-content: space-between;">Calculadora de Frete por Região <span>→</span></div>
-
           <div class="card-desc">Painel de consulta e faturamento instantâneo por Região e M³.</div>
-
         </div>
-
-
 
         <div class="card clickable-card" style="text-align: left; border-left: 4px solid var(--success);" onclick="navigateTo('subManuais')">
-
           <div class="icon-container"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
-
           <div class="card-title" style="justify-content: space-between;">Manuais e Procedimentos (PDF) <span>→</span></div>
-
           <div class="card-desc">Download e consulta das diretrizes de emissão de faturamento.</div>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
-
-
 
   <div id="subXml" class="page-section internal-panel">
-
     <div class="container" style="max-width: 700px;">
-
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 20px;" onclick="navigateTo('privateDashboard')">← Voltar ao Menu</button>
-
       <div class="content-box" style="border-top: 4px solid #06b6d4;">
-
         <h3>Robô Modificador XML</h3>
-
         <select id="listaTransportadores" class="form-control" style="margin-top:12px;"></select>
-
         <input type="file" id="xmlFiles" accept=".xml" multiple class="form-control" style="margin-top:12px;">
-
         <div id="fileList" class="file-list">Nenhum arquivo selecionado</div>
-
         <button id="processarBtn" class="btn btn-primary" style="background-color: #004aad; width: 100%; margin-top: 20px;">🔄 Modificar XMLs</button>
-
         <div id="consoleRobotLog" class="robot-log" style="display: none;"></div>
-
       </div>
-
     </div>
-
   </div>
-
-
 
   <div id="subFrete" class="page-section internal-panel">
-
     <div class="container" style="max-width: 950px;">
-
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 20px;" onclick="navigateTo('privateDashboard')">← Voltar ao Menu</button>
-
       
-
       <div class="content-box" style="border-top:4px solid var(--primary);">
-
         <h3>Painel de Consulta & Faturamento de Frete</h3>
-
         <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">
-
           Selecione a Região desejada e informe a cubagem em M³. O sistema realizará a busca nas tabelas Bauducco e atualizará o resumo automaticamente.
-
         </p>
-
         
-
         <div class="table-responsive table-frete" style="margin-bottom: 24px; border: 1px solid var(--border); border-radius: 8px;">
-
           <table id="tabelaFrete">
-
             <thead>
-
               <tr>
-
                 <th style="min-width: 250px;">Selecionar Região</th>
-
                 <th style="width: 180px;">M³ Carregado (NF)</th>
-
                 <th style="width: 200px;">Tarifa Cadastrada Base (TON)</th>
-
               </tr>
-
             </thead>
-
             <tbody>
-
               <tr>
-
                 <td>
-
                   <select class="regiao-select" onchange="calcularFluxoFrete()">
-
                     <option value="">-- Escolha a Região --</option>
-
                   </select>
-
                 </td>
-
                 <td>
-
                   <input type="number" class="m3-input" value="0.00" step="0.01" min="0" oninput="calcularFluxoFrete()">
-
                 </td>
-
                 <td>
-
                   <input type="text" id="campoTarifaFracaoBase" class="readonly-input" value="R$ 0,00" readonly style="color: var(--primary); font-weight: 600;">
-
                 </td>
-
               </tr>
-
             </tbody>
-
           </table>
-
         </div>
-
-
 
         <h3 style="margin-bottom: 16px;">Resumo do Cálculo</h3>
-
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-
           <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-
             <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Frete</span>
-
             <div id="resumoFrete" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 0,00</div>
-
           </div>
-
           
-
           <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-
             <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Pedágio</span>
-
             <div id="resumoPedagio" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 0,00</div>
-
           </div>
-
           
-
           <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-
             <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Taxa de Emissão</span>
-
             <div id="resumoTaxa" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 28,00</div>
-
           </div>
-
         </div>
-
-
 
         <div style="margin-top: 24px; padding-top: 16px; border-top: 1px dashed var(--border); text-align: right; margin-bottom: 16px;">
-
           <span style="font-size: 13px; color: var(--muted-foreground); font-weight: 600;">TOTAL UNIFICADO DO PROCESSO:</span>
-
           <span id="resumoTotalGeral" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-left: 8px;">R$ 0,00</span>
-
         </div>
-
-
 
         <div id="painelConfigAdmin" style="display: none; background: #fff1f2; padding: 20px; border-radius: 8px; border: 1px solid #fecdd3; margin-top: 24px;">
-
           <h4 style="color: #9f1239; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-
             <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-
             Modo Administrador Ativo — Gerenciamento e Reajustes Diretamente no Google Sheets
-
           </h4>
-
         </div>
 
-
-
       </div>
-
     </div>
-
   </div>
-
-
 
   <div id="subManuais" class="page-section internal-panel">
-
     <div class="container">
-
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 20px;" onclick="navigateTo('privateDashboard')">← Voltar ao Menu</button>
-
       <div class="content-box" style="border-top: 4px solid var(--success);">
-
         <h3>Manuais e Processos de Emissão</h3>
-
         <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">Acesse os guias práticos atualizados da operação:</p>
-
         
-
         <ul class="pdf-list">
-
           <li class="pdf-item">
-
             <div class="pdf-info">
-
               <svg class="pdf-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-
               <div>
-
-                <strong>guia_operacional _venda_lotacao_passo_a_passo.pdf</strong>
-
+                <strong>guia_operacional_venda_lotacao_passo_a_passo.pdf</strong>
                 <p style="font-size:11px; color:var(--muted-foreground)">Tamanho: 1.4 MB | Atualizado em: 2026</p>
-
               </div>
-
             </div>
-
-            <a href="https://raw.githubusercontent.com/ellecetransportesadm-web/frota_ellece/main/manuais/guia_opercional_venda_lotacao_passo_a_passo.pdf" target="_blank" download="guia_opercional_venda_lotacao_passo_a_passo.pdf" class="btn btn-sm btn-outline-dark" style="border-color:var(--success); color:var(--success)">Download PDF</a>
-
+            <a href="./manuais/guia_operacional_venda_lotacao_passo_a_passo.pdf" target="_blank" download="guia_operacional_venda_lotacao_passo_a_passo.pdf" class="btn btn-sm btn-outline-dark" style="border-color:var(--success); color:var(--success)">Download PDF</a>
           </li>
-
         </ul>
-
       </div>
-
     </div>
-
   </div>
-
-
 
   <footer id="mainPageFooter" class="main-footer">
-
     <div class="container">
-
       <div class="footer-grid">
-
         <div class="footer-col">
-
           <div class="brand" style="color: #fff; margin-bottom: 8px;">Bauducco <span style="color:var(--secondary)">Transportes</span></div>
-
           <p>Central integrada de logística e monitoramento de frotas para motoristas parceiros.</p>
-
         </div>
-
         <div class="footer-col">
-
           <h4>Navegação</h4>
-
           <a href="#" onclick="navigateTo('publicPage')">Início</a>
-
           <a href="#" onclick="navigateTo('subFormParceiro')">Quero ser Parceiro</a>
-
           <a href="#" onclick="toggleLoginModal(true)">Área Restrita Operação</a>
-
         </div>
-
         <div class="footer-col">
-
           <h4>Atendimento Frota</h4>
-
           <div class="contact-item">
-
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-
             <span>(11) 9 9545-5674</span>
-
           </div>
-
           <div class="contact-item">
-
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-
             <span>marcelops@bauducco.com.br</span>
-
           </div>
-
         </div>
-
       </div>
-
       <div class="footer-bottom">
-
         <div>&copy; 2026 Bauducco Transportes.</div>
-
         <div>Guarulhos - SP</div>
-
       </div>
-
     </div>
-
   </footer>
 
-
-
   <div id="loginModal" class="login-overlay" onclick="closeModalOutside(event)">
-
     <div class="login-card">
-
       <button class="close-login" onclick="toggleLoginModal(false)">✕</button>
-
       <div class="login-header">
-
         <h3>Acesso Restrito</h3>
-
         <p>Informe suas credenciais operacionais</p>
-
       </div>
-
       <form onsubmit="handleLogin(event)">
-
         <div class="form-group"><label>Usuário</label><input type="text" id="username" class="form-control" placeholder="marcelops" required></div>
-
         <div class="form-group"><label>Senha</label><input type="password" id="password" class="form-control" placeholder="••••••••" required></div>
-
         <div id="loginError" class="error-msg">Incorreto.</div>
-
         <div style="margin-top: 8px;">
-
           <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
-
         </div>
-
       </form>
-
     </div>
-
   </div>
 
-
-
   <script>
-
     // URL DO SEU BACK-END GOOGLE APPS SCRIPT
-
     const API_URL_PLANILHA = "https://script.google.com/macros/s/AKfycby_lEa5DFiOUL65BVGbHlR85XDNR3pvCFECqaMkXBTPm1ykT_ahOVhLz_aWR4XK45QsWA/exec"; 
 
-
-
     const TAXA_EMISSAO_FIXA = 28.00;
-
     let usuarioNivelLogado = "operador";
-
     let tabelaPrecoRegioes = {}; 
 
-
-
     function popularCamposSelecaoRegiao(selectElement) {
-
       selectElement.innerHTML = '<option value="">-- Escolha a Região --</option>';
-
       for (let regiao in tabelaPrecoRegioes) {
-
         let opt = document.createElement('option');
-
         opt.value = regiao;
-
         opt.textContent = regiao;
-
         selectElement.appendChild(opt);
-
       }
-
     }
-
-
 
     function calcularFluxoFrete() {
-
       const regiaoSelecionada = document.querySelector('.regiao-select').value;
-
       const m3Carregado = parseFloat(document.querySelector('.m3-input').value) || 0;
 
-
-
       const campoTarifaBase = document.getElementById('campoTarifaFracaoBase');
-
       const cardFrete = document.getElementById('resumoFrete');
-
       const cardPedagio = document.getElementById('resumoPedagio');
-
       const cardTaxa = document.getElementById('resumoTaxa');
-
       const cardTotal = document.getElementById('resumoTotalGeral');
 
-
-
       if (!regiaoSelecionada || !tabelaPrecoRegioes[regiaoSelecionada]) {
-
         campoTarifaBase.value = "R$ 0,00";
-
         cardFrete.innerText = "R$ 0,00";
-
         cardPedagio.innerText = "R$ 0,00";
-
         cardTaxa.innerText = TAXA_EMISSAO_FIXA.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
         cardTotal.innerText = "R$ 0,00";
-
         return;
-
       }
-
-
 
       const dadosRegiao = tabelaPrecoRegioes[regiaoSelecionada];
-
       campoTarifaBase.value = dadosRegiao.freteTon.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-
-
       if (m3Carregado <= 0) {
-
         cardFrete.innerText = "R$ 0,00";
-
         cardPedagio.innerText = "R$ 0,00";
-
         cardTotal.innerText = "R$ 0,00";
-
         return;
-
       }
-
-
 
       const valorFreteCalculado = (dadosRegiao.freteTon * 3 / 10) * m3Carregado;
-
       let produtoM3 = m3Carregado * 300;
-
       let FatorArredondado = Math.ceil(produtoM3 / 100);
-
       const valorPedagioCalculado = dadosRegiao.pedagio * FatorArredondado;
-
       const totalGeralFinal = valorFreteCalculado + valorPedagioCalculado + TAXA_EMISSAO_FIXA;
 
-
-
       cardFrete.innerText = valorFreteCalculado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
       cardPedagio.innerText = valorPedagioCalculado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
       cardTaxa.innerText = TAXA_EMISSAO_FIXA.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
       cardTotal.innerText = totalGeralFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
     }
-
-
 
     async function salvarNovoParceiro(event) {
-
       event.preventDefault();
-
       const dados = {
-
         acao: "salvarLead",
-
         nome: document.getElementById('fNome').value.trim(),
-
         telefone: document.getElementById('fFone').value.trim(),
-
         placa: document.getElementById('fPlaca').value.trim().toUpperCase(),
-
         tipo: document.getElementById('fTipo').value,
-
         antt: document.getElementById('fAntt').value.trim()
-
       };
 
-
-
       try {
-
         const response = await fetch(API_URL_PLANILHA, {
-
           method: "POST",
-
           body: JSON.stringify(dados)
-
         });
-
         const res = await response.json();
-
         if(res.success) {
-
           alert("Cadastro efetuado com sucesso! Aguarde a análise da equipe de faturamento.");
-
           event.target.reset();
-
           navigateTo('publicPage');
-
         }
-
       } catch (error) {
-
         alert("Erro ao sincronizar dados. Tente novamente.");
-
       }
-
     }
 
-
-
     // ========================================================================
-
     // ROBÔ XML EDI (Arquivos locais)
-
     // ========================================================================
-
     const xmlInput = document.getElementById('xmlFiles');
-
     const fileList = document.getElementById('fileList');
-
     const processButton = document.getElementById('processarBtn');
-
     const selectTransportador = document.getElementById('listaTransportadores');
-
     const terminalLog = document.getElementById('consoleRobotLog');
 
-
-
     const transportadoresFixos = [
-
       { nome: "Transportadora Ellece Guarulhos", cnpj: "13930232000190", ie: "336597436111" },
-
       { nome: "Transportadora Ellece Extrema", cnpj: "13930232000271", ie: "0020948890010" },
-
       { nome: "Transportadora Ellece Extrema", cnpj: "13930232000352", ie: "244141231" },
-
     ];
 
-
-
     const carregarTransportadores = () => {
-
       selectTransportador.innerHTML = '<option value="">-- Selecione a Filial --</option>';
-
       transportadoresFixos.forEach(t => {
-
         const option = document.createElement('option');
-
         option.value = `${t.cnpj}|${t.ie}`;
-
         option.textContent = `${t.nome} - ${t.cnpj}`;
-
         selectTransportador.appendChild(option);
-
       });
-
     };
-
     carregarTransportadores();
 
-
-
     xmlInput.addEventListener('change', () => {
-
       const files = Array.from(xmlInput.files);
-
       fileList.innerHTML = files.length === 0 ? "Nenhum arquivo" : files.map(f => `<div>📄 ${f.name}</div>`).join('');
-
     });
-
-
 
     processButton.addEventListener('click', async () => {
-
       const selected = selectTransportador.value;
-
       if (!selected) { alert("Selecione um transportador."); return; }
-
       const [cnpj, inscricao] = selected.split("|");
-
       const files = Array.from(xmlInput.files);
-
       if (files.length === 0) { alert("Selecione os XMLs."); return; }
 
-
-
       terminalLog.style.display = "block";
-
       terminalLog.innerHTML = `🏁 [ROBÔ]: Iniciando...<br>`;
 
-
-
       for (const file of files) {
-
         try {
-
           const text = await file.text();
-
           const parser = new DOMParser();
-
           const xmlDoc = parser.parseFromString(text, "text/xml");
-
           const transportaNode = xmlDoc.getElementsByTagName("transporta")[0];
-
           if (transportaNode) {
-
             if (transportaNode.getElementsByTagName("CNPJ")[0]) transportaNode.getElementsByTagName("CNPJ")[0].textContent = cnpj;
-
             if (transportaNode.getElementsByTagName("IE")[0]) transportaNode.getElementsByTagName("IE")[0].textContent = inscricao;
-
-            terminalLog.innerHTML += `✔️ Modificado: ${file.name}<br>`;
-
+            terminalLog.innerHTML += `✔️ Modificado: ${file.name}<br>';
           }
-
           const serializer = new XMLSerializer();
-
           const modifiedXML = serializer.serializeToString(xmlDoc);
-
           const blob = new Blob([modifiedXML], { type: "application/xml" });
-
           const link = document.createElement("a");
-
           link.href = URL.createObjectURL(blob);
-
           link.download = file.name.replace(".xml", "_modificado.xml");
-
           link.click();
-
         } catch (err) {
-
           terminalLog.innerHTML += `❌ Erro em ${file.name}<br>`;
-
         }
-
       }
-
       alert("✅ Concluído!");
-
     });
 
-
-
     // ========================================================================
-
     // SPA E AUTENTICAÇÃO INTEGRADA
-
     // ========================================================================
-
     async function handleLogin(event) {
-
       event.preventDefault();
-
       const userIn = document.getElementById('username').value.trim().toLowerCase();
-
       const passIn = document.getElementById('password').value;
-
       const errorMsg = document.getElementById('loginError');
-
-
 
       errorMsg.style.display = 'none';
 
-
-
       try {
-
         const response = await fetch(API_URL_PLANILHA, {
-
           method: "POST",
-
           body: JSON.stringify({ acao: "login", usuario: userIn, senha: passIn })
-
         });
-
         
-
         const resultado = await response.json();
 
-
-
         if (resultado.autenticado) {
-
           usuarioNivelLogado = resultado.nivel ? resultado.nivel.toString().toLowerCase().trim() : "operador";
-
           tabelaPrecoRegioes = resultado.tabelas; 
-
           
-
           document.querySelectorAll('.regiao-select').forEach(popularCamposSelecaoRegiao);
 
-
-
           toggleLoginModal(false); 
-
           navigateTo('privateDashboard');
-
           
-
           document.getElementById('lblUserLogado').innerText = resultado.nomeExibicao;
-
           document.getElementById('navActionArea').innerHTML = `<span style="font-size:13px; color:var(--success); font-weight:600; cursor:pointer;" onclick="navigateTo('privateDashboard')">● Painel Conectado</span>`;
-
         } else {
-
           errorMsg.innerText = "Usuário ou senha incorretos.";
-
           errorMsg.style.display = 'block';
-
         }
-
       } catch (error) {
-
         errorMsg.innerText = "Erro na conexão com o servidor de autenticação.";
-
         errorMsg.style.display = 'block';
-
       }
-
     }
-
-
 
     function navigateTo(pageId) {
-
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-
       if (document.getElementById(pageId)) document.getElementById(pageId).classList.add('active');
-
       
-
       const footer = document.getElementById('mainPageFooter');
-
       if (pageId === 'publicPage' || pageId === 'subFormParceiro') {
-
         footer.style.display = 'block';
-
       } else {
-
         footer.style.display = 'none';
-
       }
-
       
-
       const painelAdmin = document.getElementById('painelConfigAdmin');
-
       if (pageId === 'subFrete' && (usuarioNivelLogado === 'admin' || usuarioNivelLogado === 'ADMIN')) {
-
         painelAdmin.style.display = 'block';
-
       } else {
-
         painelAdmin.style.display = 'none';
-
       }
-
-
 
       window.scrollTo(0, 0);
-
     }
-
-
 
     function toggleLoginModal(open) {
-
       const modal = document.getElementById('loginModal');
-
       if (open) { 
-
         modal.classList.add('open'); 
-
       } else { 
-
         modal.classList.remove('open'); 
-
       }
-
     }
-
     
-
     function closeModalOutside(event) { 
-
       if(event.target.id === 'loginModal') toggleLoginModal(false); 
-
     }
-
-
 
     function logout() {
-
       usuarioNivelLogado = "operador";
-
       tabelaPrecoRegioes = {};
-
       navigateTo('publicPage');
-
       document.getElementById('navActionArea').innerHTML = `<button class="btn btn-sm btn-outline-dark" onclick="toggleLoginModal(true)"><svg style="margin-right:6px; width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>Área do Funcionário</button>`;
-
     }
-
-
 
     let currentIdx = 0;
-
     const slides = document.querySelectorAll('.slide-img');
-
     if(slides.length) {
-
       setInterval(() => {
-
         slides[currentIdx].classList.remove('active');
-
         currentIdx = (currentIdx + 1) % slides.length;
-
         slides[currentIdx].classList.add('active');
-
       }, 4500);
-
     }
-
   </script>
-
 </body>
-
-</html> 
-
+</html>
