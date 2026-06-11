@@ -667,7 +667,7 @@
         <div class="card">
           <div class="icon-container"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
           <div class="card-title">Parceria Forte</div>
-          <div class="card-desc">Faça parte de uma structure integrada com suporte total ao motorista de frota.</div>
+          <div class="card-desc">Faça parte de uma estrutura integrada com suporte total ao motorista de frota.</div>
         </div>
       </div>
     </section>
@@ -851,11 +851,11 @@
             <div class="pdf-info">
               <svg class="pdf-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
               <div>
-                <strong>guia_operacional_venda_lotacao_passo_a_passo.pdf</strong>
+                <strong>guia_opercional_venda_lotacao_passo_a_passo.pdf</strong>
                 <p style="font-size:11px; color:var(--muted-foreground)">Tamanho: 1.4 MB | Atualizado em: 2026</p>
               </div>
             </div>
-            <a href="./manuais/guia_operacional_venda_lotacao_passo_a_passo.pdf" target="_blank" download="guia_operacional_venda_lotacao_passo_a_passo.pdf" class="btn btn-sm btn-outline-dark" style="border-color:var(--success); color:var(--success)">Download PDF</a>
+            <a href="https://raw.githubusercontent.com/ellecetransportesadm-web/frota_ellece/main/manuais/guia_opercional_venda_lotacao_passo_a_passo.pdf" target="_blank" download="guia_opercional_venda_lotacao_passo_a_passo.pdf" class="btn btn-sm btn-outline-dark" style="border-color:var(--success); color:var(--success)">Download PDF</a>
           </li>
         </ul>
       </div>
@@ -1048,7 +1048,7 @@
           if (transportaNode) {
             if (transportaNode.getElementsByTagName("CNPJ")[0]) transportaNode.getElementsByTagName("CNPJ")[0].textContent = cnpj;
             if (transportaNode.getElementsByTagName("IE")[0]) transportaNode.getElementsByTagName("IE")[0].textContent = inscricao;
-            terminalLog.innerHTML += `✔️ Modificado: ${file.name}<br>';
+            terminalLog.innerHTML += `✔️ Modificado: ${file.name}<br>`;
           }
           const serializer = new XMLSerializer();
           const modifiedXML = serializer.serializeToString(xmlDoc);
