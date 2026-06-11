@@ -865,7 +865,7 @@
     </div>
   </div>
 
-  <div id="subManuais" class="page-section active id="subManuais" class="page-section internal-panel">
+  <div id="subManuais" class="page-section internal-panel">
     <div class="container">
       <button class="btn btn-sm btn-outline-dark" style="margin-bottom: 20px;" onclick="navigateTo('privateDashboard')">← Voltar ao Menu</button>
       <div class="content-box" style="border-top: 4px solid var(--success);">
@@ -1037,7 +1037,6 @@
       document.getElementById('inputNovoFreteAdmin').value = '';
     }
 
-    /* FUNÇÃO NOVA: Permite o ajuste da tarifa fracionada diretamente na memória ativa do front-end */
     function aplicarAjusteFracionadoAdmin() {
       const regiaoSelecionada = document.querySelector('.regiao-select').value;
       const novoValorFracionado = parseFloat(document.getElementById('inputNovoFracionadoAdmin').value);
@@ -1045,7 +1044,6 @@
       if (!regiaoSelecionada) { alert("Selecione uma região para aplicar o ajuste fracionado."); return; }
       if (isNaN(novoValorFracionado) || novoValorFracionado < 0) { alert("Valor numérico inválido."); return; }
 
-      // Trata a propriedade da tabela de forma flexível de acordo com a resposta do JSON
       if (!tabelaPrecoRegioes[regiaoSelecionada].fracionado) {
         tabelaPrecoRegioes[regiaoSelecionada].fracionado = 0;
       }
@@ -1159,7 +1157,8 @@
         const resultado = await response.json();
 
         if (resultado.autenticado) {
-          usuarioNivelLogado = resultado.nivel;
+          // CORREÇÃO: Força a gravação do nível sempre em caixa baixa para evitar falhas de validação visual
+          usuarioNivelLogado = resultado.nivel ? resultado.nivel.toString().toLowerCase().trim() : "operador";
           tabelaPrecoRegioes = resultado.tabelas; 
           
           document.querySelectorAll('.regiao-select').forEach(popularCamposSelecaoRegiao);
@@ -1179,6 +1178,7 @@
       }
     }
 
+    // CORREÇÃO TRATATIVA DE APRESENTAÇÃO OPERACIONAL:
     function navigateTo(pageId) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
       if (document.getElementById(pageId)) document.getElementById(pageId).classList.add('active');
@@ -1190,8 +1190,9 @@
         footer.style.display = 'none';
       }
       
+      // AJUSTE ANTI-FALHA DE DIRETRIZ: Valida tanto se o retorno da planilha vier como 'admin' ou 'ADMIN'
       const painelAdmin = document.getElementById('painelConfigAdmin');
-      if (pageId === 'subFrete' && usuarioNivelLogado === 'admin') {
+      if (pageId === 'subFrete' && (usuarioNivelLogado === 'admin' || usuarioNivelLogado === 'ADMIN')) {
         painelAdmin.style.display = 'block';
       } else {
         painelAdmin.style.display = 'none';
