@@ -800,20 +800,27 @@
       <div class="content-box" style="border-top:4px solid var(--primary);">
         <h3>Painel de Consulta & Faturamento de Frete</h3>
         <p style="font-size:13px; color:var(--muted-foreground); margin-bottom:16px;">
-          Selecione a Região desejada e informe a cubagem em M³. O sistema realizará a busca nas tabelas Bauducco e atualizará o resumo automaticamente.
+          Selecione primeiro o Tipo de Documento, escolha a Região desejada e informe a cubagem em M³. O sistema realizará a busca nas tabelas Bauducco, calculará individualmente o imposto embutido por dentro (12% para CTe e 6% para Documento de Apoio) e atualizará as projeções de custos automaticamente.
         </p>
         
         <div class="table-responsive table-frete" style="margin-bottom: 24px; border: 1px solid var(--border); border-radius: 8px;">
           <table id="tabelaFrete">
             <thead>
               <tr>
-                <th style="min-width: 250px;">Selecionar Região</th>
-                <th style="width: 180px;">M³ Carregado (NF)</th>
+                <th style="width: 180px;">Tipo de Documento</th>
+                <th style="min-width: 230px;">Selecionar Região</th>
+                <th style="width: 150px;">M³ Carregado (NF)</th>
                 <th style="width: 200px;">Tarifa Cadastrada Base (TON)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
+                <td>
+                  <select id="tipoDocumento" onchange="calcularFluxoFrete()">
+                    <option value="CTE">CTe (12% Imposto Embutido)</option>
+                    <option value="APOIO">Doc. Apoio (6% Imposto Embutido)</option>
+                  </select>
+                </td>
                 <td>
                   <select class="regiao-select" onchange="calcularFluxoFrete()">
                     <option value="">-- Escolha a Região --</option>
@@ -832,24 +839,35 @@
 
         <h3 style="margin-bottom: 16px;">Resumo do Cálculo</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-            <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Frete</span>
-            <div id="resumoFrete" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 0,00</div>
+          
+          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Frete</span>
+              <div id="resumoFrete" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 0,00</div>
+            </div>
+            <div id="freteComImposto" style="font-size: 11px; color: var(--muted-foreground); margin-top: 8px; border-top: 1px solid var(--border); padding-top: 4px;">Com Imposto: R$ 0,00</div>
           </div>
           
-          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-            <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Pedágio</span>
-            <div id="resumoPedagio" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 0,00</div>
+          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Pedágio</span>
+              <div id="resumoPedagio" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 0,00</div>
+            </div>
+            <div id="pedagioComImposto" style="font-size: 11px; color: var(--muted-foreground); margin-top: 8px; border-top: 1px solid var(--border); padding-top: 4px;">Com Imposto: R$ 0,00</div>
           </div>
           
-          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
-            <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Taxa de Emissão</span>
-            <div id="resumoTaxa" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 28,00</div>
+          <div style="background: var(--accent); padding: 16px; border-radius: 8px; border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span style="font-size: 12px; color: var(--muted-foreground); font-weight: 600; text-transform: uppercase;">Taxa de Emissão</span>
+              <div id="resumoTaxa" style="font-size: 20px; font-weight: 700; color: var(--foreground); margin-top: 4px;">R$ 28,00</div>
+            </div>
+            <div id="taxaComImposto" style="font-size: 11px; color: var(--muted-foreground); margin-top: 8px; border-top: 1px solid var(--border); padding-top: 4px;">Com Imposto: R$ 0,00</div>
           </div>
         </div>
 
         <div style="max-width: 950px; margin-top: 24px; padding-top: 16px; border-top: 1px dashed var(--border); text-align: right; margin-bottom: 16px;">
-          <span style="font-size: 13px; color: var(--muted-foreground); font-weight: 600;">TOTAL UNIFICADO DO PROCESSO:</span>
+          <span id="labelImpostoAplicado" style="font-size: 12px; color: var(--success); font-weight: 700; margin-right: 15px; text-transform: uppercase;"></span>
+          <span style="font-size: 13px; color: var(--muted-foreground); font-weight: 600;">TOTAL UNIFICADO COM IMPOSTO:</span>
           <span id="resumoTotalGeral" style="font-size: 22px; font-weight: 800; color: var(--primary); margin-left: 8px;">R$ 0,00</span>
         </div>
 
@@ -962,22 +980,40 @@
       }
     }
 
+    // FUNÇÃO DE CÁLCULO ATUALIZADA COM DETALHAMENTO DE IMPOSTO "POR DENTRO" POR ITEM
     function calcularFluxoFrete() {
       const regiaoSelecionada = document.querySelector('.regiao-select').value;
       const m3Carregado = parseFloat(document.querySelector('.m3-input').value) || 0;
+      const tipoDoc = document.getElementById('tipoDocumento').value; // CTE ou APOIO
 
       const campoTarifaBase = document.getElementById('campoTarifaFracaoBase');
+      
+      // Captura dos elementos visuais
       const cardFrete = document.getElementById('resumoFrete');
+      const cardFreteImposto = document.getElementById('freteComImposto');
+      
       const cardPedagio = document.getElementById('resumoPedagio');
+      const cardPedagioImposto = document.getElementById('pedagioComImposto');
+      
       const cardTaxa = document.getElementById('resumoTaxa');
+      const cardTaxaImposto = document.getElementById('taxaComImposto');
+      
       const cardTotal = document.getElementById('resumoTotalGeral');
+      const labelImposto = document.getElementById('labelImpostoAplicado');
+
+      const taxaImposto = tipoDoc === "CTE" ? 0.12 : 0.06;
+      const fatorGrossUp = 1 - taxaImposto;
 
       if (!regiaoSelecionada || !tabelaPrecoRegioes[regiaoSelecionada]) {
         campoTarifaBase.value = "R$ 0,00";
         cardFrete.innerText = "R$ 0,00";
+        cardFreteImposto.innerText = "Com Imposto: R$ 0,00";
         cardPedagio.innerText = "R$ 0,00";
+        cardPedagioImposto.innerText = "Com Imposto: R$ 0,00";
         cardTaxa.innerText = TAXA_EMISSAO_FIXA.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        cardTaxaImposto.innerText = "Com Imposto: R$ 0,00";
         cardTotal.innerText = "R$ 0,00";
+        labelImposto.innerText = "";
         return;
       }
 
@@ -986,20 +1022,47 @@
 
       if (m3Carregado <= 0) {
         cardFrete.innerText = "R$ 0,00";
+        cardFreteImposto.innerText = "Com Imposto: R$ 0,00";
         cardPedagio.innerText = "R$ 0,00";
+        cardPedagioImposto.innerText = "Com Imposto: R$ 0,00";
+        cardTaxaImposto.innerText = "Com Imposto: R$ 0,00";
         cardTotal.innerText = "R$ 0,00";
+        labelImposto.innerText = "";
         return;
       }
 
+      // 1. Cálculos de Base (Sem impostos)
       const valorFreteCalculado = (dadosRegiao.freteTon * 3 / 10) * m3Carregado;
       let produtoM3 = m3Carregado * 300;
       let FatorArredondado = Math.ceil(produtoM3 / 100);
       const valorPedagioCalculado = dadosRegiao.pedagio * FatorArredondado;
-      const totalGeralFinal = valorFreteCalculado + valorPedagioCalculado + TAXA_EMISSAO_FIXA;
+      const valorTaxaBase = TAXA_EMISSAO_FIXA;
 
+      // 2. Cálculos de Imposto "Por Dentro" (Individual por item)
+      const freteComImposto = valorFreteCalculado / fatorGrossUp;
+      const pedagioComImposto = valorPedagioCalculado / fatorGrossUp;
+      const taxaComImposto = valorTaxaBase / fatorGrossUp;
+
+      // 3. Soma Unificada Final
+      const totalGeralFinal = freteComImposto + pedagioComImposto + taxaComImposto;
+      const totalSemImposto = valorFreteCalculado + valorPedagioCalculado + valorTaxaBase;
+      const totalImpostoAcumulado = totalGeralFinal - totalSemImposto;
+
+      // 4. Atualização Visual do Painel
+      // Card Frete
       cardFrete.innerText = valorFreteCalculado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      cardFreteImposto.innerHTML = `Com Imposto (${taxaImposto * 100}%): <strong>${freteComImposto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>`;
+
+      // Card Pedágio
       cardPedagio.innerText = valorPedagioCalculado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-      cardTaxa.innerText = TAXA_EMISSAO_FIXA.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      cardPedagioImposto.innerHTML = `Com Imposto (${taxaImposto * 100}%): <strong>${pedagioComImposto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>`;
+
+      // Card Taxa
+      cardTaxa.innerText = valorTaxaBase.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      cardTaxaImposto.innerHTML = `Com Imposto (${taxaImposto * 100}%): <strong>${taxaComImposto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong>`;
+      
+      // Resumos e Rodapé
+      labelImposto.innerText = `Total Impostos Embutidos: ${totalImpostoAcumulado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`;
       cardTotal.innerText = totalGeralFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
